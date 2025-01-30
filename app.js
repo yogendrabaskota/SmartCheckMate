@@ -1,10 +1,15 @@
-const express = require('express')
+const express = require('express');
+const { connectDatabase } = require('./database/database');
 
 const app = express()
+
+connectDatabase()
 
 require("dotenv").config()
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+
 
 
 app.get("/",(req,res)=>{  
