@@ -18,12 +18,14 @@ app.get("/",(req,res)=>{
 const authRoute = require("./route/authRoute")
 const schoolRoute = require("./route/schoolRoute")
 const classRoute = require("./route/classRoute")
+const studentRoute = require("./route/studentRoute")
 
 
 
 app.use("/api",authRoute)
 app.use("/api/school",schoolRoute)
 app.use("/api/class",classRoute)
+app.use("/api/student",studentRoute)
 
 
 
