@@ -16,10 +16,12 @@ app.get("/",(req,res)=>{
 })
 
 const authRoute = require("./route/authRoute")
+const schoolRoute = require("./route/schoolRoute")
 
 
 
 app.use("/api",authRoute)
+app.use("/api/school",schoolRoute)
 
 
 const PORT = 5000;
