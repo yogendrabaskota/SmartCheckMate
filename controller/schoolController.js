@@ -34,6 +34,11 @@ exports.getMySchool = async(req,res)=>{
     const userId = req.user.id 
 
     const response = await School.findOne({userId})
+    .populate({
+        path:"userId",
+        model : "User",
+        select : "-createdAt -updatedAt -__v -password -phoneNumber"
+    }) 
     //console.log(response)
 
     if(!response){
