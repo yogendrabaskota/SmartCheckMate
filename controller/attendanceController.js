@@ -1,44 +1,48 @@
 const Attendance = require("../model/attendanceModel")
 
 
-exports.doAttendance = async(req,res)=>{
-    const {classId, studentId, remarks } = req.body
+exports.doAttendance = async (req, res) => {
+    const { classId, studentId, remarks } = req.body;
 
-    //console.log(classId)
-    //console.log(studentId)
-    //console.log(remarks)
-
-
-
-    if(!classId || !studentId || !remarks){
+    if (!classId || !studentId || !remarks) {
         return res.status(400).json({
-            message : "Please provide classId, studentId and remarks"
-        })
-
+            message: "Please provide classId, studentId, and remarks"
+        });
     }
 
-    const findAttendance = await Attendance.find({
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Check if an attendance record already exists for today
+    const findAttendance = await Attendance.findOne({
         classId,
-        studentId
-    })
-   // console.log(findAttendance)
+        studentId,
+        createdAt: {
+            $gte: today, // Greater than or equal to today's start
+            $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000) // Less than tomorrow's start
+        }
+    });
+    console.log(findAttendance)
 
-    if(findAttendance.length > 0){
+    if (findAttendance) {
         return res.status(400).json({
-            message : "you already have attendance for this student"
-        })
+            message: "Attendance for this student has already been marked today"
+        });
     }
 
+    // If no attendance for today, create a new one
     const response = await Attendance.create({
         classId,
         studentId,
-        remarks
+        remarks,
     })
+
     res.status(200).json({
-        message : "Attendance marked successfully",
-        data : response
-    })
-}
+        message: "Attendance marked successfully",
+        data: response
+    });
+};
 
 
 exports.getAttendance = async(req,res)=>{
@@ -72,3 +76,59 @@ exports.getAttendance = async(req,res)=>{
         data : response
     })
 }
+
+
+exports.getPresentCount = async (req, res) => {
+    const { date } = req.params; // Expecting YYYY-MM-DD format
+
+    if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        return res.status(400).json({ 
+            message: "Invalid date format. Please provide a valid date in YYYY-MM-DD format." 
+        });
+    }
+
+    try {
+        // Convert date to UTC without hardcoding time
+        const selectedDate = new Date(date);
+        selectedDate.setUTCHours(0, 0, 0, 0);
+
+        const nextDay = new Date(selectedDate);
+        nextDay.setUTCDate(nextDay.getUTCDate() + 1);
+        nextDay.setUTCHours(0, 0, 0, 0);
+
+        //console.log("Selected Date (UTC):", selectedDate);
+        //console.log("Next Day (UTC):", nextDay);
+
+        // Find present students and populate their names
+        const presentStudents = await Attendance.find({
+            createdAt: { $gte: selectedDate, $lt: nextDay },
+            remarks: "present"
+        }).populate({
+            path:"studentId",
+            model : "Student",
+            select : "-createdAt -updatedAt -__v "
+        }) 
+
+
+        const presentCount = presentStudents.length;
+
+       // console.log("Present Count:", presentCount);
+        //console.log("Present Students:", presentStudents);
+
+        res.status(200).json({
+            message: `Total present students on ${date}`,
+            count: presentCount,
+            students: presentStudents.map(student => ({
+                id: student.studentId._id,
+                name: student.studentId.name
+            }))
+        });
+
+    } catch (error) {
+        console.error("Error fetching attendance count:", error);
+        res.status(500).json({ 
+            message: "Error fetching attendance count", 
+            error: error.message 
+        });
+    }
+};
