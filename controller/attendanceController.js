@@ -28,7 +28,7 @@ exports.doAttendance = async(req,res)=>{
             message : "you already have attendance for this student"
         })
     }
-    
+
     const response = await Attendance.create({
         classId,
         studentId,
@@ -53,7 +53,20 @@ exports.getAttendance = async(req,res)=>{
     const response = await Attendance.find({
         classId,
         studentId
-    })
+    }).populate({
+        path:"classId",
+        model : "Class",
+        select : "-createdAt -updatedAt -__v -password -phoneNumber"
+    }) 
+    .populate({
+        path:"studentId",
+        model : "Student",
+        select : "-createdAt -updatedAt -__v "
+    }) 
+
+
+
+
     res.status(200).json({
         message : "Attendance fetched successfully",
         data : response

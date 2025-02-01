@@ -1,4 +1,5 @@
 const { registerUser, getAllUser, loginUser } = require("../controller/authController")
+const isAuthenticated = require("../moddleware/isAuthenticated")
 
 
 const router = require("express").Router()
@@ -8,7 +9,7 @@ router.route("/register")
     .post(registerUser)
 
 router.route("/all")
-    .get(getAllUser)
+    .get(isAuthenticated ,getAllUser)
 
 router.route("/login")
     .post(loginUser)
