@@ -1,13 +1,14 @@
 
 const { addClass, getMyClass } = require("../controller/classController")
 const isAuthenticated = require("../moddleware/isAuthenticated")
+const catchAsync = require("../services/catchAsync")
 
 const router = require("express").Router()
 
 
 router.route("/add/:schoolId")
-    .post(isAuthenticated,addClass)
-    .get(isAuthenticated,getMyClass)
+    .post(isAuthenticated,catchAsync(addClass))
+    .get(isAuthenticated,catchAsync(getMyClass))
 
 
 module.exports = router
