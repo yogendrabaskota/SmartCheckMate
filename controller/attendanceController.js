@@ -67,13 +67,20 @@ exports.getAttendance = async(req,res)=>{
         model : "Student",
         select : "-createdAt -updatedAt -__v "
     }) 
+    
 
+    const finalResponse = response.length 
+    // if(finalResponse < 1){
+    //     return res.status(404).json({
+    //         message : "No attendance found"
+    //     })
+    // }
 
 
 
     res.status(200).json({
         message : "Attendance fetched successfully",
-        data : response
+        data : finalResponse
     })
 }
 

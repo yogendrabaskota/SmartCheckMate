@@ -38,7 +38,7 @@ exports.getClassStudent = async(req,res)=>{
             schoolId
         })
         .populate({
-            path:"classId",
+            path:"classId", 
             model : "Class",
             select : "-createdAt -updatedAt -__v"
         }) 
@@ -55,9 +55,10 @@ exports.getClassStudent = async(req,res)=>{
             message : "No student found"
         })
     }
+    console.log(finalResponse)
     res.status(200).json({
         message : "Student fetched successfully",
-        data : response
+        data : response 
     })
 
     
