@@ -9,6 +9,10 @@ require("dotenv").config()
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const cors = require('cors');
+app.use(cors());
+
+
 app.get("/",(req,res)=>{  
     res.status(200).json({
     message : "Backend is Running"

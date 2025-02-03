@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +45,9 @@ const Navbar = () => {
 
         {/* Navbar Buttons */}
         <ul className="flex space-x-6">
+          <Link to={'/'}>
           <li className="text-white text-lg font-semibold tracking-normal cursor-pointer">Home</li>
+          </Link>
           {isLoggedIn ? (
             <li
               className="text-white text-lg font-semibold tracking-normal cursor-pointer"
@@ -54,9 +57,11 @@ const Navbar = () => {
             </li>
           ) : (
             <>
+            <Link to={'/login'}>
               <li className="text-white text-lg font-semibold tracking-normal cursor-pointer">
                 Login
               </li>
+              </Link>
               <li className="text-white text-lg font-semibold tracking-normal cursor-pointer">
                 Register
               </li>
