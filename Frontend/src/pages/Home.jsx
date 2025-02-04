@@ -53,7 +53,9 @@ const Home = () => {
   };
 
   const handleChooseSchool = (schoolId) => {
-    navigate(`/schoolDetails?schoolId=${schoolId}`);
+   // navigate(`/schoolDetails?schoolId=${schoolId}`);
+    navigate(`/schoolDetails/${schoolId}`);
+
   };
 
   if (loading) {
