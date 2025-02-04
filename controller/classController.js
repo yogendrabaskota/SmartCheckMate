@@ -38,16 +38,16 @@ exports.getMyClass = async(req,res)=>{
         {
             userId,
             schoolId
-        })
-        .populate({
-            path:"userId",
-            model : "User",
-            select : "-createdAt -updatedAt -__v -password -phoneNumber"
-        }) 
+        },"-createdAt -updatedAt -__v" )
+        // .populate({
+        //     path:"userId",
+        //     model : "User",
+        //     select : "-createdAt -updatedAt -__v -password -phoneNumber"
+        // }) 
         .populate({
             path:"schoolId",
             model : "School",
-            select : "-createdAt -updatedAt -__v "
+            select : "-createdAt -updatedAt -__v -address"
         }) 
 
     //console.log(response)
