@@ -39,7 +39,7 @@ const Navbar = () => {
             </svg>
           </div>
           <h1 className="text-white font-bold text-xl tracking-wide cursor-pointer">
-            Tubemixza
+            Attendance System
           </h1>
         </div>
 
@@ -62,9 +62,11 @@ const Navbar = () => {
                 Login
               </li>
               </Link>
+              <Link to={'/register'}>
               <li className="text-white text-lg font-semibold tracking-normal cursor-pointer">
                 Register
               </li>
+              </Link>
             </>
           )}
         </ul>
