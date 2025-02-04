@@ -38,9 +38,11 @@ const Navbar = () => {
               />
             </svg>
           </div>
+          <Link to={'/'}>
           <h1 className="text-white font-bold text-xl tracking-wide cursor-pointer">
             Attendance System
           </h1>
+          </Link>
         </div>
 
         {/* Navbar Buttons */}
