@@ -5,13 +5,23 @@ exports.addClass = async(req,res)=>{
     const {name} = req.body 
     const userId = req.user.id 
     const schoolId = req.params.schoolId
-    console.log(schoolId)
+    //console.log(schoolId)
 
     if(!name) {
         return res.status(400).json({
             message : "Please provide class name"
         })
     }
+
+    const foundName = await Class.find({name})
+    //console.log(foundName)
+    if(foundName.length >0 ){
+        return res.status(400).json({
+            message : "This className already exist!! Please use unique className"
+        })
+    }
+
+
     if(!schoolId){
         return res.status(400).json({
             message : "Please provide schoolId"
