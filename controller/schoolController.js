@@ -33,7 +33,7 @@ exports.addSchool = async(req,res)=>{
 exports.getMySchool = async(req,res)=>{
     const userId = req.user.id 
 
-    const response = await School.findOne({userId},"-createdAt -updatedAt -__v" )
+    const response = await School.find({userId},"-createdAt -updatedAt -__v" )
     // .populate({
     //     path:"userId",
     //     model : "User",
