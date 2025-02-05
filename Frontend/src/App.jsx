@@ -6,6 +6,7 @@ import Login from './auth/Login'
 import Register from './auth/Register'
 import Home from './pages/Home'
 import SchoolDetails from './pages/SchoolDetails'
+import AddSchool from './pages/School/AddSchool'
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Home />} />
       <Route path="/schoolDetails/:id" element={<SchoolDetails />} />
+      <Route path="/add-school" element={<AddSchool />} />
 
 
     </Routes>
