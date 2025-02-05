@@ -34,7 +34,7 @@ exports.getMyClass = async(req,res)=>{
     const userId = req.user.id 
     const schoolId = req.params.schoolId
 
-    const response = await Class.findOne(
+    const response = await Class.find(
         {
             userId,
             schoolId
