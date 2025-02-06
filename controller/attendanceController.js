@@ -142,18 +142,18 @@ exports.getPresentCount = async (req, res) => {
 
 exports.getAllAttendance = async(req,res) =>{
 
-    const {classId} = req.body
+    const {classId} = req.params
 
     if(!classId){
         return res.status(400).json({
-            message : "Please provide classId and studeneId",
+            message : "Please provide classId",
         })
     }
 
-    const response = await Attendance.find()
+    const response = await Attendance.find({classId})
     
 
-    console.log(response)
+    //console.log(response)
    // const finalResponse = response.length 
     // if(finalResponse < 1){
     //     return res.status(404).json({

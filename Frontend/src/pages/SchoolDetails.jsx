@@ -51,8 +51,8 @@ const SchoolDetails = () => {
 
   const handleChooseClass = (classItem) => {
     // navigate(`/schoolDetails?schoolId=${schoolId}`);
-     //navigate(`/classDetails/${classItem}`);
-     navigate(`/classDetails`);
+     navigate(`/classDetails/${classItem}`);
+     //navigate(`/classDetails`);
  
    };
  

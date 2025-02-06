@@ -12,7 +12,7 @@ router.route("/do")
 router.route("/present-count/:date")
     .get(isAuthenticated,catchAsync(getPresentCount))
 
-router.route("/getAll")
+router.route("/getAll/:classId")
     .get(catchAsync(getAllAttendance))
 
 module.exports = router

@@ -17,21 +17,21 @@ const ClassDetails = () => {
 
     const fetchAttendances = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/student/getAll", {
-          method: "GET",
+        const response = await fetch(`http://localhost:5000/api/student/getAll/${classId}`, {
+          method: "GET", // Now using GET request
           headers: {
             "Content-Type": "application/json",
-            Authorization: `${token}`,
+            Authorization: `Bearer ${token}`, // Added Bearer
           },
         });
 
         const result = await response.json();
-
-        if (result.data) {
-          setAttendances(result.data.filter((att) => att.classId === classId));
-        } else {
-          setAttendances([]);
+        
+        if (!response.ok) {
+          throw new Error(result.message || "Failed to fetch attendance.");
         }
+
+        setAttendances(result.data || []);
       } catch (error) {
         console.error("Error fetching attendance:", error);
         setAttendances([]);
@@ -50,11 +50,15 @@ const ClassDetails = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token"),
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
 
         const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.message || "Failed to fetch class details.");
+        }
+
         if (result.data) {
           setClassName(result.data.name);
         }
