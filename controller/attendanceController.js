@@ -139,3 +139,31 @@ exports.getPresentCount = async (req, res) => {
         });
     }
 };
+
+exports.getAllAttendance = async(req,res) =>{
+
+    const {classId} = req.body
+
+    if(!classId){
+        return res.status(400).json({
+            message : "Please provide classId and studeneId",
+        })
+    }
+
+    const response = await Attendance.find()
+    
+
+    console.log(response)
+   // const finalResponse = response.length 
+    // if(finalResponse < 1){
+    //     return res.status(404).json({
+    //         message : "No attendance found"
+    //     })
+    // }
+
+    res.status(200).json({
+        message : "All Attendance fetched successfully",
+        data : response
+    })
+
+}

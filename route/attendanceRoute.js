@@ -1,4 +1,4 @@
-const { doAttendance, getAttendance, getPresentCount } = require("../controller/attendanceController")
+const { doAttendance, getAttendance, getPresentCount, getAllAttendance } = require("../controller/attendanceController")
 const isAuthenticated = require("../moddleware/isAuthenticated")
 const catchAsync = require("../services/catchAsync")
 
@@ -11,5 +11,8 @@ router.route("/do")
     .get(isAuthenticated,catchAsync(getAttendance))
 router.route("/present-count/:date")
     .get(isAuthenticated,catchAsync(getPresentCount))
+
+router.route("/getAll")
+    .get(catchAsync(getAllAttendance))
 
 module.exports = router
