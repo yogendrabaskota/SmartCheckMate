@@ -8,6 +8,7 @@ import Home from './pages/Home'
 import SchoolDetails from './pages/SchoolDetails'
 import AddSchool from './pages/School/AddSchool'
 import AddClass from './pages/class/AddClass'
+import ClassDetails from './pages/class/classDetails'
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
       <Route path="/schoolDetails/:id" element={<SchoolDetails />} />
       <Route path="/add-school" element={<AddSchool />} />
       <Route path="/add-class/:id" element={<AddClass />} />
+      <Route path="/classDetails" element={<ClassDetails />} />
 
 
     </Routes>

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -50,7 +51,8 @@ const SchoolDetails = () => {
 
   const handleChooseClass = (classItem) => {
     // navigate(`/schoolDetails?schoolId=${schoolId}`);
-     navigate(`/classDetails/${classItem}`);
+     //navigate(`/classDetails/${classItem}`);
+     navigate(`/classDetails`);
  
    };
  
