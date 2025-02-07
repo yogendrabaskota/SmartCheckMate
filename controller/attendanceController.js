@@ -153,9 +153,19 @@ exports.getAllAttendance = async (req, res) => {
         }
 
         // Fetch attendance records for the given class
-        const attendanceRecords = await Attendance.find({ classId });
+        const attendanceRecords = await Attendance.find({ classId })
+        .populate({
+                 path:"classId",
+                 model : "Class",
+                 select : "-createdAt -updatedAt -__v"
+             }) 
+             
 
-        //console.log("Attendance Records:", attendanceRecords);
+        const final = attendanceRecords[0].classId.name
+        //console.log("okokok",final)
+
+
+       // console.log("Attendance Records:", attendanceRecords);
 
         if (!attendanceRecords.length) {
             return res.status(404).json({
@@ -177,6 +187,7 @@ exports.getAllAttendance = async (req, res) => {
             message: "Attendance dates fetched successfully",
             totalDays: uniqueDates.size,
             dates: [...uniqueDates],
+            data: final
         });
 
     } catch (error) {

@@ -4,7 +4,8 @@ import { useParams } from "react-router-dom";
 const ClassDetails = () => {
   const { id: classId } = useParams();
   const [className, setClassName] = useState("");
-  const [attendanceGroups, setAttendanceGroups] = useState({});
+  const [attendanceDates, setAttendanceDates] = useState([]);
+  const [attendanceData, setAttendanceData] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,7 +16,7 @@ const ClassDetails = () => {
       return;
     }
 
-    const fetchAttendances = async () => {
+    const fetchAttendanceDates = async () => {
       try {
         const response = await fetch(`http://localhost:5000/api/student/getAll/${classId}`, {
           method: "GET",
@@ -31,26 +32,17 @@ const ClassDetails = () => {
           throw new Error(result.message || "Failed to fetch attendance.");
         }
 
-        // Grouping attendances by date
-        const groupedData = {};
-        result.data.forEach((attendance) => {
-          const date = new Date(attendance.createdAt).toLocaleDateString(); // Get only the date
-          if (!groupedData[date]) {
-            groupedData[date] = [];
-          }
-          groupedData[date].push(attendance);
-        });
-
-        setAttendanceGroups(groupedData);
+        setAttendanceDates(result.dates || []);
+        setAttendanceData(result.data || "");
       } catch (error) {
-        console.error("Error fetching attendance:", error);
-        setAttendanceGroups({});
+        console.error("Error fetching attendance dates:", error);
+        setAttendanceDates([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchAttendances();
+    fetchAttendanceDates();
   }, [classId]);
 
   useEffect(() => {
@@ -60,7 +52,7 @@ const ClassDetails = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `${localStorage.getItem("token")}`,
           },
         });
 
@@ -81,29 +73,30 @@ const ClassDetails = () => {
   }, [classId]);
 
   if (loading) {
-    return <p className="text-center text-lg mt-10">Loading attendances...</p>;
+    return <p className="text-center text-lg mt-10">Loading attendance data...</p>;
   }
 
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-4xl font-bold text-center text-gray-800 my-6">{className}</h1>
+      <p className="text-center text-lg font-semibold text-gray-700 mb-4">{attendanceData}</p>
 
-      {Object.keys(attendanceGroups).length === 0 ? (
+      {attendanceDates.length === 0 ? (
         <div className="text-center mt-6">
           <p className="text-gray-600 text-lg">No attendance records found.</p>
         </div>
       ) : (
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {Object.entries(attendanceGroups).map(([date, attendances]) => (
+          {attendanceDates.map((date, index) => (
             <div
-              key={date}
+              key={index}
               className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-all"
             >
-              <h2 className="text-xl font-semibold text-gray-800 mb-2">Date: {date}</h2>
-              <p className="text-gray-600">
-                Attendance Count: <strong>{attendances.length}</strong>
-              </p>
-              <p className="text-gray-500 text-sm">Sample Student: {attendances[0].studentId}</p>
+              <h2 className="text-xl font-semibold text-gray-800 mb-2">{date}</h2>
+              <p className="text-gray-600">Attendance recorded on this day.</p>
+              <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all">
+                See Details
+              </button>
             </div>
           ))}
         </div>
