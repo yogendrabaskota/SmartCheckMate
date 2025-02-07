@@ -13,6 +13,6 @@ router.route("/present-count/:date")
     .get(isAuthenticated,catchAsync(getPresentCount))
 
 router.route("/getAll/:classId")
-    .get(catchAsync(getAllAttendance))
+    .get(isAuthenticated,catchAsync(getAllAttendance))
 
 module.exports = router
