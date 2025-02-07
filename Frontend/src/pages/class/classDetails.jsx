@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const ClassDetails = () => {
-  const { id: classId } = useParams();
+  const { id: classId, schoolId } = useParams();
+  const navigate = useNavigate();
   const [className, setClassName] = useState("");
   const [attendanceDates, setAttendanceDates] = useState([]);
   const [attendanceData, setAttendanceData] = useState("");
@@ -22,7 +23,7 @@ const ClassDetails = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `${token}`,
           },
         });
 
@@ -48,7 +49,7 @@ const ClassDetails = () => {
   useEffect(() => {
     const fetchClassDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/class/${classId}`, {
+        const response = await fetch(`http://localhost:5000/api/class/add/${classId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -78,7 +79,15 @@ const ClassDetails = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-4xl font-bold text-center text-gray-800 my-6">{className}</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-4xl font-bold text-gray-800">{className}</h1>
+        <button 
+          className="px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all"
+          onClick={() => navigate(`/student/add/${schoolId}/${classId}`)}
+        >
+          Add Student
+        </button>
+      </div>
       <p className="text-center text-lg font-semibold text-gray-700 mb-4">{attendanceData}</p>
 
       {attendanceDates.length === 0 ? (
@@ -101,12 +110,6 @@ const ClassDetails = () => {
           ))}
         </div>
       )}
-
-      <div className="text-center mt-6">
-        <button className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all">
-          DO Today
-        </button>
-      </div>
     </div>
   );
 };
