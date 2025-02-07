@@ -1,4 +1,5 @@
 const Attendance = require("../model/attendanceModel")
+const moment = require('moment');
 
 
 exports.doAttendance = async (req, res) => {
@@ -140,30 +141,46 @@ exports.getPresentCount = async (req, res) => {
     }
 };
 
-exports.getAllAttendance = async(req,res) =>{
 
-    const {classId} = req.params
+exports.getAllAttendance = async (req, res) => {
+    try {
+        const { classId } = req.params;
 
-    if(!classId){
-        return res.status(400).json({
-            message : "Please provide classId",
-        })
+        if (!classId) {
+            return res.status(400).json({
+                message: "Please provide classId",
+            });
+        }
+
+        // Fetch attendance records for the given class
+        const attendanceRecords = await Attendance.find({ classId });
+
+        //console.log("Attendance Records:", attendanceRecords);
+
+        if (!attendanceRecords.length) {
+            return res.status(404).json({
+                message: "No attendance found",
+            });
+        }
+
+        // Extract unique dates using createdAt
+        const uniqueDates = new Set();
+        attendanceRecords.forEach(record => {
+            if (record.createdAt) {
+                uniqueDates.add(moment(record.createdAt).format('YYYY-MM-DD'));
+            }
+        });
+
+        //console.log("Unique Dates:", uniqueDates);
+
+        res.status(200).json({
+            message: "Attendance dates fetched successfully",
+            totalDays: uniqueDates.size,
+            dates: [...uniqueDates],
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
     }
-
-    const response = await Attendance.find({classId})
-    
-
-    //console.log(response)
-   // const finalResponse = response.length 
-    // if(finalResponse < 1){
-    //     return res.status(404).json({
-    //         message : "No attendance found"
-    //     })
-    // }
-
-    res.status(200).json({
-        message : "All Attendance fetched successfully",
-        data : response
-    })
-
-}
+};
