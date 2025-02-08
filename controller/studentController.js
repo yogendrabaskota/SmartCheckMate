@@ -25,7 +25,7 @@ exports.addStudent = async(req,res)=>{
 }
 
 exports.getClassStudent = async(req,res)=>{
-    const {schoolId, classId} = req.body
+    const {schoolId, classId} = req.params
 
     if(!schoolId || !classId){
         return res.status(400).json({
@@ -56,7 +56,7 @@ exports.getClassStudent = async(req,res)=>{
             message : "No student found"
         })
     }
-    console.log(finalResponse)
+   // console.log(finalResponse)
     res.status(200).json({
         message : "Student fetched successfully",
         data : response 
