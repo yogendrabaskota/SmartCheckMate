@@ -18,44 +18,41 @@ const SchoolDetails = () => {
     }
 
     const fetchClasses = async () => {
-        try {
-          const response = await fetch(`http://localhost:5000/api/class/add/${schoolId}`, {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/class/add/${schoolId}`,
+          {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
               Authorization: `${token}`,
             },
-          });
-      
-          const result = await response.json();
-      
-          if (result.data) {
-            // If result.data is an object, wrap it in an array
-            setClasses(Array.isArray(result.data) ? result.data : [result.data]);
-          } else {
-            setClasses([]);
           }
-        } catch (error) {
-          console.error("Error fetching classes:", error);
+        );
+
+        const result = await response.json();
+
+        if (result.data) {
+          setClasses(Array.isArray(result.data) ? result.data : [result.data]);
+        } else {
           setClasses([]);
-        } finally {
-          setLoading(false);
         }
-      };
-      
+      } catch (error) {
+        console.error("Error fetching classes:", error);
+        setClasses([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
     if (schoolId) {
       fetchClasses();
     }
   }, [schoolId, navigate]);
 
-  const handleChooseClass = (classItem) => {
-    // navigate(`/schoolDetails?schoolId=${schoolId}`);
-     navigate(`/classDetails/${classItem}`);
-     //navigate(`/classDetails`);
- 
-   };
- 
+  const handleChooseClass = (classId) => {
+    navigate(`/classDetails/${schoolId}/${classId}`);
+  };
 
   const handleAddClass = () => {
     navigate(`/add-class/${schoolId}`);
@@ -67,7 +64,9 @@ const SchoolDetails = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-4xl font-bold text-center text-gray-800 my-6">Classes for School</h1>
+      <h1 className="text-4xl font-bold text-center text-gray-800 my-6">
+        Classes for School
+      </h1>
 
       {classes.length === 0 ? (
         <div className="text-center mt-6">
@@ -87,17 +86,19 @@ const SchoolDetails = () => {
                 key={classItem._id}
                 className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-all"
               >
-                <h2 className="text-2xl font-semibold text-gray-800 mb-2">{classItem.name}</h2>
-                <p className="text-gray-500 text-sm">School Name:<strong> {classItem.schoolId.name}</strong></p>
-                {/* <p className="text-gray-500 text-sm">Total Students: {classItem.totalStudents}</p> */}
-                
-                <button
-                className="mt-4 w-full px-4 py-2 bg-green-600 text-white text-lg font-medium rounded-lg hover:bg-green-700 transition-all"
-                onClick={() => handleChooseClass(classItem._id)}
-              >
-                Choose
-              </button>
+                <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+                  {classItem.name}
+                </h2>
+                <p className="text-gray-500 text-sm">
+                  School Name:<strong> {classItem.schoolId.name}</strong>
+                </p>
 
+                <button
+                  className="mt-4 w-full px-4 py-2 bg-green-600 text-white text-lg font-medium rounded-lg hover:bg-green-700 transition-all"
+                  onClick={() => handleChooseClass(classItem._id)}
+                >
+                  Choose
+                </button>
               </div>
             ))}
           </div>

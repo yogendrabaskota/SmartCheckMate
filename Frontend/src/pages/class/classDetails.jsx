@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 const ClassDetails = () => {
-  const { id: classId, schoolId } = useParams();
+  const { schoolId, classId } = useParams(); // ✅ Correctly extracting params
   const navigate = useNavigate();
   const [className, setClassName] = useState("");
   const [attendanceDates, setAttendanceDates] = useState([]);
@@ -14,6 +14,7 @@ const ClassDetails = () => {
 
     if (!token) {
       alert("Please login to view class details.");
+      navigate("/login");
       return;
     }
 
@@ -44,7 +45,7 @@ const ClassDetails = () => {
     };
 
     fetchAttendanceDates();
-  }, [classId]);
+  }, [classId, navigate]);
 
   useEffect(() => {
     const fetchClassDetails = async () => {
