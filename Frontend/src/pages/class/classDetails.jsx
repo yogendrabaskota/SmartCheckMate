@@ -101,9 +101,13 @@ const ClassDetails = () => {
             >
               <h2 className="text-xl font-semibold text-gray-800 mb-2">{date}</h2>
               <p className="text-gray-600">Attendance recorded on this day.</p>
-              <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all">
+              {/* <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all">
+                See Details
+              </button> */}
+              <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all" onClick={() => navigate(`/studentdetails/${classId}/${date}`)}>
                 See Details
               </button>
+
             </div>
           ))}
         </div>

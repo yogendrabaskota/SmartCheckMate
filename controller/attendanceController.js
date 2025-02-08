@@ -89,6 +89,8 @@ exports.getAttendance = async(req,res)=>{
 
 exports.getPresentCount = async (req, res) => {
     const { date } = req.params; // Expecting YYYY-MM-DD format
+    const {classId} = req.params
+
 
     if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
         return res.status(400).json({ 
@@ -110,8 +112,10 @@ exports.getPresentCount = async (req, res) => {
 
         // Find present students and populate their names
         const presentStudents = await Attendance.find({
+            classId,
             createdAt: { $gte: selectedDate, $lt: nextDay },
             remarks: "present"
+            
         }).populate({
             path:"studentId",
             model : "Student",
