@@ -1,7 +1,8 @@
 const Student = require("../model/studentModel")
 
 exports.addStudent = async(req,res)=>{
-    const {name, schoolId, classId} = req.body 
+    const {schoolId,classId} = req.params
+    const {name} = req.body 
 
 
     if(!name || !schoolId || !classId) {
