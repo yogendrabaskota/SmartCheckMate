@@ -80,17 +80,14 @@ const ClassDetails = () => {
 
   return (
     <div className="container mx-auto p-6">
+      {/* Class Name Heading */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-4xl font-bold text-gray-800">{className}</h1>
-        <button 
-          className="px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all"
-          onClick={() => navigate(`/student/add/${schoolId}/${classId}`)}
-        >
-          Add Student
-        </button>
       </div>
+
       <p className="text-center text-lg font-semibold text-gray-700 mb-4">{attendanceData}</p>
 
+      {/* Attendance Cards */}
       {attendanceDates.length === 0 ? (
         <div className="text-center mt-6">
           <p className="text-gray-600 text-lg">No attendance records found.</p>
@@ -111,6 +108,23 @@ const ClassDetails = () => {
           ))}
         </div>
       )}
+
+      {/* Buttons: "Add Student" and "Today Attendance" */}
+      <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+        <button 
+          className="px-6 py-3 bg-green-600 text-white text-lg font-medium rounded-lg shadow-md hover:bg-green-700 transition-all"
+          onClick={() => navigate(`/student/add/${schoolId}/${classId}`)}
+        >
+          Add Student
+        </button>
+
+        <button 
+          className="px-6 py-3 bg-orange-500 text-white text-lg font-medium rounded-lg shadow-md hover:bg-orange-600 transition-all"
+          onClick={() => navigate(`/attendance/today/${schoolId}/${classId}`)}
+        >
+          Today Attendance
+        </button>
+      </div>
     </div>
   );
 };
