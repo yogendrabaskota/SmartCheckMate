@@ -6,6 +6,10 @@ const catchAsync = require("../services/catchAsync")
 const router = require("express").Router()
 
 
+
+router.route("/do/:classId")
+    .post(isAuthenticated,catchAsync(doAttendance))
+
 router.route("/do")
     .post(isAuthenticated,catchAsync(doAttendance))
     .get(isAuthenticated,catchAsync(getAttendance))

@@ -3,7 +3,8 @@ const moment = require('moment');
 
 
 exports.doAttendance = async (req, res) => {
-    const { classId, studentId, remarks } = req.body;
+    const { studentId, remarks } = req.body;
+    const { classId} = req.params
 
     if (!classId || !studentId || !remarks) {
         return res.status(400).json({
