@@ -66,3 +66,37 @@ exports.getClassStudent = async(req,res)=>{
 
 
 }
+
+exports.getAllStudent = async(req,res)=>{
+
+
+
+    const response = await Student.find()
+        .populate({
+            path:"classId", 
+            model : "Class",
+            select : "-createdAt -updatedAt -__v"
+        }) 
+        .populate({
+            path:"schoolId",
+            model : "School",
+            select : "-createdAt -updatedAt -__v "
+        }) 
+
+    //console.log(response)
+
+    if(response.length == 0){
+        return res.status(404).json({
+            message : "No student found"
+        })
+    }
+   // console.log(finalResponse)
+    res.status(200).json({
+        message : "Student fetched successfully",
+        data : response 
+    })
+
+    
+
+
+}
