@@ -7,6 +7,7 @@ const SchoolDetails = () => {
   const navigate = useNavigate();
   const [classes, setClasses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [schoolName, setSchoolName] = useState(""); // State for school name
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -34,6 +35,10 @@ const SchoolDetails = () => {
 
         if (result.data) {
           setClasses(Array.isArray(result.data) ? result.data : [result.data]);
+          
+          if (result.data.length > 0 && result.data[0].schoolId) {
+            setSchoolName(result.data[0].schoolId.name); // Set school name
+          }
         } else {
           setClasses([]);
         }
@@ -65,7 +70,7 @@ const SchoolDetails = () => {
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-4xl font-bold text-center text-gray-800 my-6">
-        Classes for School
+        Classes for  {schoolName}
       </h1>
 
       {classes.length === 0 ? (
@@ -90,7 +95,7 @@ const SchoolDetails = () => {
                   {classItem.name}
                 </h2>
                 <p className="text-gray-500 text-sm">
-                  School Name:<strong> {classItem.schoolId.name}</strong>
+                  School Name: <strong>{classItem.schoolId.name}</strong>
                 </p>
 
                 <button

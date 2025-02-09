@@ -101,19 +101,15 @@ const ClassDetails = () => {
             >
               <h2 className="text-xl font-semibold text-gray-800 mb-2">{date}</h2>
               <p className="text-gray-600">Attendance recorded on this day.</p>
-              {/* <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all">
-                See Details
-              </button> */}
               <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all" onClick={() => navigate(`/studentdetails/${classId}/${date}`)}>
                 See Details
               </button>
-
             </div>
           ))}
         </div>
       )}
 
-      {/* Buttons: "Add Student" and "Today Attendance" */}
+      {/* Buttons: "Add Student", "Today Attendance", and "Student Details" */}
       <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
         <button 
           className="px-6 py-3 bg-green-600 text-white text-lg font-medium rounded-lg shadow-md hover:bg-green-700 transition-all"
@@ -127,6 +123,14 @@ const ClassDetails = () => {
           onClick={() => navigate(`/attendance/today/${schoolId}/${classId}`)}
         >
           Today Attendance
+        </button>
+
+        {/* New "Student Details" Button */}
+        <button 
+          className="px-6 py-3 bg-purple-600 text-white text-lg font-medium rounded-lg shadow-md hover:bg-purple-700 transition-all"
+          onClick={() => navigate(`/student/details/${schoolId}/${classId}`)}
+        >
+          Student Details
         </button>
       </div>
     </div>
