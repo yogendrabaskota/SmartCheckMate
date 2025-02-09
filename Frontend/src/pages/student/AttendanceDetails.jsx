@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const AttendanceDetails = () => {
   const { classId, date } = useParams();
   const [presentCount, setPresentCount] = useState(0);
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchAttendanceDetails = async () => {
@@ -37,7 +38,7 @@ const AttendanceDetails = () => {
     };
 
     fetchAttendanceDetails();
-  }, [classId, date]);
+  }, [classId, date,navigate]);
 
   if (loading) {
     return <p className="text-center text-lg mt-10">Loading attendance details...</p>;
@@ -56,7 +57,17 @@ const AttendanceDetails = () => {
           <h2 className="text-xl font-semibold text-gray-800 mb-2">Present Students:</h2>
           <ul className="list-disc pl-5 text-gray-700">
             {students.map((student) => (
-              <li key={student.id} className="text-lg font-medium">{student.name}</li>
+              <li key={student.id} className="text-lg font-medium ">{student.name}
+               {/* <span className="text-lg text-gray-700">{student.name}</span>
+               <button 
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all"
+                  onClick={() => navigate(`/student/detail/${classId}/${student._id}`)}
+                >
+                  Details
+                </button> */}
+              
+              </li>
+              
             ))}
           </ul>
         </div>

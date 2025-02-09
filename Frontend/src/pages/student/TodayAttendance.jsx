@@ -81,7 +81,7 @@ const TodayAttendance = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-4xl font-bold text-center text-gray-800 mb-6">Today's Attendance</h1>
+      <h1 className="text-4xl font-bold text-center text-gray-800 mb-6 mt-10">Today's Attendance</h1>
 
       {loading ? (
         <p className="text-center text-lg text-gray-700">Loading students...</p>
