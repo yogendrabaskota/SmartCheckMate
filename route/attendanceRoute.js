@@ -10,9 +10,12 @@ const router = require("express").Router()
 router.route("/do/:classId")
     .post(isAuthenticated,catchAsync(doAttendance))
 
+router.route("/do/:classId/:studentId")
+    .get(isAuthenticated,catchAsync(getAttendance))
+
 router.route("/do")
     .post(isAuthenticated,catchAsync(doAttendance))
-    .get(isAuthenticated,catchAsync(getAttendance))
+
 router.route("/present-count/:classId/:date")
     .get(isAuthenticated,catchAsync(getPresentCount))
 

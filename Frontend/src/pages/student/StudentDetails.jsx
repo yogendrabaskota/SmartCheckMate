@@ -61,7 +61,7 @@ const StudentDetails = () => {
                 <span className="text-lg text-gray-700">{student.name}</span>
                 <button 
                   className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all"
-                  onClick={() => navigate(`/student/details/${student._id}`)}
+                  onClick={() => navigate(`/student/detail/${classId}/${student._id}`)}
                 >
                   Details
                 </button>

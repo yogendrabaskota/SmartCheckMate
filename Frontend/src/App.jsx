@@ -13,6 +13,7 @@ import AddStudent from './pages/student/AddStudent'
 import TodayAttendance from './pages/student/TodayAttendance'
 import AttendanceDetails from './pages/student/AttendanceDetails'
 import StudentDetails from './pages/student/StudentDetails'
+import PersonalAttendance from './pages/student/PresentAttendance'
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
       <Route path="/attendance/today/:schoolId/:classId" element={<TodayAttendance />} />
       <Route path="/studentdetails/:classId/:date" element={<AttendanceDetails />} />
       <Route path="/student/details/:schoolId/:classId/" element={<StudentDetails />} />
+      <Route path="/student/detail/:classId/:studentId/" element={<PersonalAttendance />} />
 
 
 

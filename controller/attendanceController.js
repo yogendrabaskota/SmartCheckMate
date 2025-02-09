@@ -48,7 +48,7 @@ exports.doAttendance = async (req, res) => {
 
 
 exports.getAttendance = async(req,res)=>{
-    const {classId, studentId} = req.body
+    const {classId, studentId} = req.params
 
     if(!classId || !studentId){
         return res.status(400).json({
@@ -82,7 +82,8 @@ exports.getAttendance = async(req,res)=>{
 
     res.status(200).json({
         message : "Attendance fetched successfully",
-        data : finalResponse
+        data: response,
+        count : finalResponse
     })
 }
 
