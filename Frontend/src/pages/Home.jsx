@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Contact from "../components/Contact";
 
 const Home = () => {
   const [schools, setSchools] = useState(null);
@@ -101,9 +102,12 @@ const Home = () => {
               Add New School
             </button>
           </div>
+          
         </div>
       )}
+      <Contact />
     </div>
+    
   );
 };
 
