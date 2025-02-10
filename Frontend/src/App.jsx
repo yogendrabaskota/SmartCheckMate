@@ -14,6 +14,7 @@ import TodayAttendance from './pages/student/TodayAttendance'
 import AttendanceDetails from './pages/student/AttendanceDetails'
 import StudentDetails from './pages/student/StudentDetails'
 import PersonalAttendance from './pages/student/PresentAttendance'
+import Contact from './components/Contact'
 
 function App() {
 
@@ -25,6 +26,8 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Home />} />
+      <Route path="/contact" element={<Contact />} />
+
       <Route path="/schoolDetails/:id" element={<SchoolDetails />} />
       <Route path="/add-school" element={<AddSchool />} />
       <Route path="/add-class/:id" element={<AddClass />} />

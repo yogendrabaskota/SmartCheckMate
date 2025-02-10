@@ -39,16 +39,22 @@ const Navbar = () => {
             </svg>
           </div>
           <Link to={'/'}>
-          <h1 className="text-white font-bold text-xl tracking-wide cursor-pointer">
-            Attendance System
-          </h1>
+            <h1 className="text-white font-bold text-xl tracking-wide cursor-pointer">
+              Attendance System
+            </h1>
           </Link>
         </div>
 
         {/* Navbar Buttons */}
         <ul className="flex space-x-6">
           <Link to={'/'}>
-          <li className="text-white text-lg font-semibold tracking-normal cursor-pointer">Home</li>
+            <li className="text-white text-lg font-semibold tracking-normal cursor-pointer">Home</li>
+          </Link>
+          <Link to={'/about'}>
+            <li className="text-white text-lg font-semibold tracking-normal cursor-pointer">About</li>
+          </Link>
+          <Link to={'/contact'}>
+            <li className="text-white text-lg font-semibold tracking-normal cursor-pointer">Contact</li>
           </Link>
           {isLoggedIn ? (
             <li
@@ -59,15 +65,15 @@ const Navbar = () => {
             </li>
           ) : (
             <>
-            <Link to={'/login'}>
-              <li className="text-white text-lg font-semibold tracking-normal cursor-pointer">
-                Login
-              </li>
+              <Link to={'/login'}>
+                <li className="text-white text-lg font-semibold tracking-normal cursor-pointer">
+                  Login
+                </li>
               </Link>
               <Link to={'/register'}>
-              <li className="text-white text-lg font-semibold tracking-normal cursor-pointer">
-                Register
-              </li>
+                <li className="text-white text-lg font-semibold tracking-normal cursor-pointer">
+                  Register
+                </li>
               </Link>
             </>
           )}
