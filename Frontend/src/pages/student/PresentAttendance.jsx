@@ -34,15 +34,12 @@ const PersonalAttendance = () => {
 
         const result = await response.json();
 
-       // console.log(result)
-
         if (!response.ok) {
           throw new Error(result.message || "Failed to fetch attendance.");
         }
 
         setAttendance(result.data || []);
         setCount(result.data ? result.data.filter(entry => entry.remarks === "present").length : 0);
-
 
         if (result.data.length > 0) {
           setStudentName(result.data[0].studentId.name);
@@ -102,19 +99,21 @@ const PersonalAttendance = () => {
         <p className="text-center text-lg text-gray-600">No attendance records found.</p>
       ) : (
         <div className="w-full max-w-2xl mx-auto mt-6">
-          {attendance.map((entry) => (
-            <div
-              key={entry._id}
-              className="bg-white p-4 mb-4 rounded-lg shadow-md border"
-            >
-              <p className="text-lg text-gray-800">
-                Present on:{" "}
-                <span className="font-semibold">
-                  {new Date(entry.createdAt).toLocaleDateString()}
-                </span>
-              </p>
-            </div>
-          ))}
+          {attendance
+            .filter((entry) => entry.remarks === "present")
+            .map((entry) => (
+              <div
+                key={entry._id}
+                className="bg-white p-4 mb-4 rounded-lg shadow-md border"
+              >
+                <p className="text-lg text-gray-800">
+                  Present on: {" "}
+                  <span className="font-semibold">
+                    {new Date(entry.createdAt).toLocaleDateString()}
+                  </span>
+                </p>
+              </div>
+            ))}
         </div>
       )}
 
