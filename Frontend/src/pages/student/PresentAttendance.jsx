@@ -41,7 +41,8 @@ const PersonalAttendance = () => {
         }
 
         setAttendance(result.data || []);
-        setCount(result.count || 0);
+        setCount(result.data ? result.data.filter(entry => entry.remarks === "present").length : 0);
+
 
         if (result.data.length > 0) {
           setStudentName(result.data[0].studentId.name);
