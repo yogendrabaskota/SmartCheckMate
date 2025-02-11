@@ -1,6 +1,7 @@
 const User = require("../model/userModel")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const sendEmail = require("../services/sendEmail")
 
 
 exports.registerUser = async(req,res)=>{
@@ -83,4 +84,25 @@ exports.loginUser = async(req,res)=>{
     }
 
 
+}
+
+exports.sendData = async(req,res)=>{
+    const{name,email,message} = req.body
+
+    if(!name || !email || !message){
+        return res.status(400).json({
+            message : "Please Fill out All the field Name, Email and Message"
+        })
+    }
+
+    await sendEmail({
+        email: `sujanbaskota321@gmail.com`, // Admin email address// Mail send to this email
+        subject: 'Contact Form Submission',
+        message: `
+          Contact Form Submission Data:
+          Name: ${name}
+          Email: ${email}
+          Message: ${message}
+        `,
+      });
 }
