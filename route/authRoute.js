@@ -1,4 +1,4 @@
-const { registerUser, getAllUser, loginUser } = require("../controller/authController")
+const { registerUser, getAllUser, loginUser, sendData } = require("../controller/authController")
 const isAuthenticated = require("../moddleware/isAuthenticated")
 const catchAsync = require("../services/catchAsync")
 
@@ -14,5 +14,7 @@ router.route("/all")
 
 router.route("/login")
     .post(loginUser)
+router.route("/data")
+    .post(catchAsync(sendData))
 
 module.exports = router

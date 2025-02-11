@@ -105,4 +105,8 @@ exports.sendData = async(req,res)=>{
           Message: ${message}
         `,
       });
+
+      res.status(200).json({
+        message : "Contact form submitted Successfully"
+      })
 }
