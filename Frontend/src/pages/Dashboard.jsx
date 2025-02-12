@@ -43,10 +43,12 @@ const Dashboard = () => {
     fetchSchools();
   }, [navigate]);
 
-
-
   const handleEditSchool = (schoolId) => {
     navigate(`/school/edit/${schoolId}`);
+  };
+
+  const handleEnterSchool = (schoolId) => {
+    navigate(`/schoolDetails/${schoolId}`);
   };
 
   if (loading) {
@@ -64,7 +66,6 @@ const Dashboard = () => {
           <p className="text-gray-600 text-lg">
             No schools found. Add one to get started.
           </p>
-     
         </div>
       ) : (
         <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -75,22 +76,32 @@ const Dashboard = () => {
               hover:shadow-2xl hover:scale-105 transition-all flex flex-col justify-between"
             >
               <h2 className="text-xl font-bold text-blue-900">{school.name}</h2>
-              <p className="text-gray-600 text-sm">{school.address}</p>
-              <p className="text-gray-600 text-sm"><strong>Created By </strong>{school.address}</p>
-              <button
-                className="mt-4 w-full px-4 py-2 bg-green-600 text-white text-lg font-medium rounded-lg 
-                hover:bg-green-700 transition-all"
-                onClick={() => handleEditSchool(school._id)}
-              >
-                Edit
-              </button>
+              <p className="text-gray-600 text-sm"> <strong>Located At: </strong> {school.address}</p>
+              {/* <p className="text-gray-600 text-sm">
+                <strong>Created By: </strong> {school.createdBy}
+              </p> */}
+
+              {/* Buttons Wrapper */}
+              <div className="flex justify-between mt-4">
+                <button
+                  className="px-4 py-2 bg-yellow-500 text-white text-sm font-medium rounded-lg 
+                  hover:bg-yellow-600 transition-all flex-1 mr-2"
+                  onClick={() => handleEditSchool(school._id)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg 
+                  hover:bg-green-700 transition-all flex-1"
+                  onClick={() => handleEnterSchool(school._id)}
+                >
+                  Enter
+                </button>
+              </div>
             </div>
           ))}
         </div>
       )}
-
-
-    
     </div>
   );
 };
