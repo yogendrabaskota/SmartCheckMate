@@ -56,6 +56,13 @@ const Navbar = () => {
           <Link to={'/contact'}>
             <li className="text-white text-lg font-semibold tracking-normal cursor-pointer">Contact</li>
           </Link>
+          {isLoggedIn && (
+            <Link to={'/dashboard'}>
+              <li className="text-white text-lg font-semibold tracking-normal cursor-pointer">
+                Dashboard
+              </li>
+            </Link>
+          )}
           {isLoggedIn ? (
             <li
               className="text-white text-lg font-semibold tracking-normal cursor-pointer"
@@ -107,7 +114,14 @@ const Navbar = () => {
             <li className="cursor-pointer p-2">Products</li>
             <li className="cursor-pointer p-2">About</li>
             <li className="cursor-pointer p-2">Contact</li>
-            {isLoggedIn && <li className="cursor-pointer p-2" onClick={handleLogout}>Logout</li>}
+            {isLoggedIn && (
+              <>
+                <Link to={'/dashboard'}>
+                  <li className="cursor-pointer p-2">Dashboard</li>
+                </Link>
+                <li className="cursor-pointer p-2" onClick={handleLogout}>Logout</li>
+              </>
+            )}
           </ul>
         </div>
       )}

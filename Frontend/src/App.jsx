@@ -15,6 +15,7 @@ import AttendanceDetails from './pages/student/AttendanceDetails'
 import StudentDetails from './pages/student/StudentDetails'
 import PersonalAttendance from './pages/student/PresentAttendance'
 import Contact from './components/Contact'
+import Dashboard from './pages/Dashboard'
 
 function App() {
 
@@ -27,6 +28,8 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Home />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+
 
       <Route path="/schoolDetails/:id" element={<SchoolDetails />} />
       <Route path="/add-school" element={<AddSchool />} />
