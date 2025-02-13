@@ -55,3 +55,45 @@ exports.getMySchool = async(req,res)=>{
 
 
 }
+
+
+exports.editSchool = async (req, res) => {
+    const { name, address } = req.body;
+    const { schoolId } = req.params;
+    const userId = req.user.id;
+
+    if (!userId) {
+        return res.status(400).json({
+            message: "You should login",
+        });
+    }
+
+    const updatedData = {};
+    if (name) updatedData.name = name;
+    if (address) updatedData.address = address;
+
+    try {
+        const updatedSchool = await School.findOneAndUpdate(
+            { _id: schoolId, userId }, // Ensuring the user owns the school
+            { $set: updatedData },
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedSchool) {
+            return res.status(404).json({
+                message: "School not found or unauthorized",
+            });
+        }
+
+        res.status(200).json({
+            message: "School updated successfully",
+            data: updatedSchool,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Internal server error",
+            error: error.message,
+        });
+    }
+};
+
