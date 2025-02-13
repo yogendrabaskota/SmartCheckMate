@@ -25,7 +25,7 @@ exports.doAttendance = async (req, res) => {
             $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000) // Less than tomorrow's start
         }
     });
-    console.log(findAttendance)
+    //console.log(findAttendance)
 
     if (findAttendance) {
         return res.status(400).json({
