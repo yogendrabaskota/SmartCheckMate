@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -7,7 +6,7 @@ const SchoolDetails = () => {
   const navigate = useNavigate();
   const [classes, setClasses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [schoolName, setSchoolName] = useState(""); // State for school name
+  const [schoolName, setSchoolName] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -35,9 +34,9 @@ const SchoolDetails = () => {
 
         if (result.data) {
           setClasses(Array.isArray(result.data) ? result.data : [result.data]);
-          
+
           if (result.data.length > 0 && result.data[0].schoolId) {
-            setSchoolName(result.data[0].schoolId.name); // Set school name
+            setSchoolName(result.data[0].schoolId.name);
           }
         } else {
           setClasses([]);
@@ -59,6 +58,10 @@ const SchoolDetails = () => {
     navigate(`/classDetails/${schoolId}/${classId}`);
   };
 
+  const handleEditClass = (classId) => {
+    navigate(`/edit-class/${schoolId}/${classId}`);
+  };
+
   const handleAddClass = () => {
     navigate(`/add-class/${schoolId}`);
   };
@@ -70,7 +73,7 @@ const SchoolDetails = () => {
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-4xl font-bold text-center text-gray-800 my-6">
-        Classes for  {schoolName}
+        Classes for {schoolName}
       </h1>
 
       {classes.length === 0 ? (
@@ -84,39 +87,46 @@ const SchoolDetails = () => {
           </button>
         </div>
       ) : (
-        <>
-          <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {classes.map((classItem) => (
-              <div
-                key={classItem._id}
-                className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-all"
-              >
-                <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-                  {classItem.name}
-                </h2>
-                <p className="text-gray-500 text-sm">
-                  School Name: <strong>{classItem.schoolId.name}</strong>
-                </p>
+        <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {classes.map((classItem) => (
+            <div
+              key={classItem._id}
+              className="bg-gradient-to-br from-blue-100 to-gray-100 p-6 h-48 rounded-xl shadow-lg border border-gray-300 
+              hover:shadow-2xl hover:scale-105 transition-all flex flex-col justify-between"
+            >
+              <h2 className="text-xl font-bold text-blue-900">{classItem.name}</h2>
+              <p className="text-gray-600 text-sm">
+                <strong>School Name: </strong> {classItem.schoolId.name}
+              </p>
 
+              <div className="flex gap-2 mt-4">
                 <button
-                  className="mt-4 w-full px-4 py-2 bg-green-600 text-white text-lg font-medium rounded-lg hover:bg-green-700 transition-all"
+                  className="px-2 py-2.5 bg-green-600 text-white text-sm font-medium rounded-lg 
+                  hover:bg-green-700 transition-all w-full"
                   onClick={() => handleChooseClass(classItem._id)}
                 >
-                  Choose
+                  Enter
+                </button>
+                <button
+                  className="px-2 py-2 bg-yellow-500 text-white text-sm font-medium rounded-lg 
+                  hover:bg-yellow-600 transition-all w-full"
+                  onClick={() => handleEditClass(classItem._id)}
+                >
+                  Edit
                 </button>
               </div>
-            ))}
-          </div>
-          <div className="text-center mt-6">
-            <button
-              className="mt-4 px-6 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-all"
-              onClick={handleAddClass}
-            >
-              Add Class
-            </button>
-          </div>
-        </>
+            </div>
+          ))}
+        </div>
       )}
+      <div className="text-center mt-6">
+        <button
+          className="mt-4 px-6 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-all"
+          onClick={handleAddClass}
+        >
+          Add Class
+        </button>
+      </div>
     </div>
   );
 };
