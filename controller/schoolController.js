@@ -55,6 +55,35 @@ exports.getMySchool = async(req,res)=>{
 
 
 }
+exports.getSingleSchool = async(req,res)=>{
+    const userId = req.user.id 
+    const {schoolId} = req.params
+
+    const response = await School.findById(schoolId)
+    // .populate({
+    //     path:"userId",
+    //     model : "User",
+    //     select : "-createdAt -updatedAt -__v -password -phoneNumber"
+    // }) 
+    //console.log(response)
+    
+
+    if(!response){
+        return res.status(404).json({
+            message : "No School found"
+        })
+    }
+    res.status(200).json({
+        message : "School fetched successfully",
+        data : response
+    })
+
+    
+
+
+}
+
+
 
 
 exports.editSchool = async (req, res) => {

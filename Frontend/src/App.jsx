@@ -16,6 +16,7 @@ import StudentDetails from './pages/student/StudentDetails'
 import PersonalAttendance from './pages/student/PresentAttendance'
 import Contact from './components/Contact'
 import Dashboard from './pages/Dashboard'
+import EditSchool from './pages/School/EditSchool'
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/school/edit/:schoolId" element={<EditSchool />} />
 
 
       <Route path="/schoolDetails/:id" element={<SchoolDetails />} />

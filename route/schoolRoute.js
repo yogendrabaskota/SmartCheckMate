@@ -1,4 +1,4 @@
-const { addSchool, getMySchool, editSchool } = require("../controller/schoolController")
+const { addSchool, getMySchool, editSchool, getSingleSchool } = require("../controller/schoolController")
 const isAuthenticated = require("../moddleware/isAuthenticated")
 const catchAsync = require("../services/catchAsync")
 
@@ -9,6 +9,10 @@ router.route("/add")
     .post(isAuthenticated, catchAsync(addSchool))
 router.route("/")
     .get(isAuthenticated,catchAsync(getMySchool))
+router.route("/:schoolId")
+    .get(isAuthenticated,catchAsync(getSingleSchool))
+    
+
 router.route("/edit/:schoolId")
     .patch(isAuthenticated,catchAsync(editSchool))
 
