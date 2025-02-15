@@ -76,3 +76,32 @@ exports.getMyClass = async(req,res)=>{
 
 
 }
+
+exports.editClass = async(req,res)=>{
+    const {name} = req.body
+    const {schoolId,classId}=req.params
+
+    if(!name) {
+        return res.status(400).json({
+            message : "Please provide class name"
+        })
+    }
+    if(!schoolId || !classId){
+        return res.status(400).json({
+            message :  "Please provide schoolId and ClassId"
+        })
+    }
+
+    const foundName = await Class.find({name})
+    
+    console.log(foundName)
+    if(foundName.length >0 ){
+        return res.status(400).json({
+            message : "This className already exist!! Please use unique className"
+        })
+    }
+
+    const response = await Class.findByIdAndUpdate({classId,schoolId})
+    
+    console.log(response)
+}
