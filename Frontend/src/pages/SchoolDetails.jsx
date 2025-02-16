@@ -66,6 +66,39 @@ const SchoolDetails = () => {
     navigate(`/add-class/${schoolId}`);
   };
 
+  const handleDeleteClass = async (classId) => {
+    const token = localStorage.getItem("token");
+
+    if (!window.confirm("Are you sure you want to delete this class?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/class/delete/${schoolId}/${classId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setClasses(classes.filter((classItem) => classItem._id !== classId));
+        alert("Class deleted successfully!");
+      } else {
+        alert(data.message || "Failed to delete class.");
+      }
+    } catch (error) {
+      console.error("Error deleting class:", error);
+      alert("Something went wrong. Please try again.");
+    }
+  };
+
   if (loading) {
     return <p className="text-center text-lg mt-10">Loading classes...</p>;
   }
@@ -113,6 +146,13 @@ const SchoolDetails = () => {
                   onClick={() => handleEditClass(classItem._id)}
                 >
                   Edit
+                </button>
+                <button
+                  className="px-2 py-2 bg-red-500 text-white text-sm font-medium rounded-lg 
+                  hover:bg-red-600 transition-all w-full"
+                  onClick={() => handleDeleteClass(classItem._id)}
+                >
+                  Delete
                 </button>
               </div>
             </div>

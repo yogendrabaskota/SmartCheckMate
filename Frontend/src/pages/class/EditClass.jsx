@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const EditClass = () => {
@@ -8,11 +8,45 @@ const EditClass = () => {
   const navigate = useNavigate();
   const { schoolId, classId } = useParams();
 
-  const apiUrl = `http://localhost:5000/api/class/edit/${schoolId}/${classId}`;
+  useEffect(() => {
+    if (!schoolId || !classId) {
+      setError("Invalid class ID.");
+      return;
+    }
+
+    const fetchClass = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setError("Unauthorized! Please log in first.");
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:5000/api/class/${schoolId}/${classId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          setClassName(data.data?.name || "");
+        } else {
+          setError(data.message || "Failed to fetch class details.");
+        }
+      } catch (error) {
+        setError("Something went wrong. Please try again.");
+      }
+    };
+
+    fetchClass();
+  }, [schoolId, classId]);
 
   const handleEditClass = async (e) => {
     e.preventDefault();
-    
+
     const token = localStorage.getItem("token");
     if (!token) {
       setError("Unauthorized! Please log in first.");
@@ -20,7 +54,7 @@ const EditClass = () => {
     }
 
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch(`http://localhost:5000/api/class/edit/${schoolId}/${classId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -30,7 +64,6 @@ const EditClass = () => {
       });
 
       const data = await response.json();
-      
       if (response.ok) {
         alert("Class updated successfully!");
         navigate(`/schoolDetails/${schoolId}`);
