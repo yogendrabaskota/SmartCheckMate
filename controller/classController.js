@@ -71,12 +71,45 @@ exports.getMyClass = async(req,res)=>{
         message : "class fetched successfully",
         data : response
     })
+}
 
 
-    
+exports.getSingleClass = async(req,res)=>{
+    const {schoolId,classId} = req.params
+    console.log(schoolId,classId)
 
+    const response = await Class.find(
+        {
+            
+            schoolId,
+            _id: classId
+        },"-createdAt -updatedAt -__v" )
+        // .populate({
+        //     path:"userId",
+        //     model : "User",
+        //     select : "-createdAt -updatedAt -__v -password -phoneNumber"
+        // }) 
+        // .populate({
+        //     path:"schoolId",
+        //     model : "School",
+        //     select : "-createdAt -updatedAt -__v -address"
+        // }) 
+
+  //  console.log(response)
+
+    if(response.length == 0){
+        return res.status(404).json({
+            message : "No class found"
+        })
+    }
+    res.status(200).json({
+        message : "class fetched successfully",
+        data : response
+    })
 
 }
+
+
 
 exports.editClass = async (req, res) => {
     try {

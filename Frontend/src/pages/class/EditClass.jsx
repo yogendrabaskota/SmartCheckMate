@@ -22,7 +22,7 @@ const EditClass = () => {
       }
 
       try {
-        const response = await fetch(`http://localhost:5000/api/class/${schoolId}/${classId}`, {
+        const response = await fetch(`http://localhost:5000/api/class/edit/${schoolId}/${classId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -31,8 +31,10 @@ const EditClass = () => {
         });
 
         const data = await response.json();
+       // console.log(data)
+        //console.log("data data name",data.data[0].name)
         if (response.ok) {
-          setClassName(data.data?.name || "");
+          setClassName(data.data[0]?.name || "");
         } else {
           setError(data.message || "Failed to fetch class details.");
         }

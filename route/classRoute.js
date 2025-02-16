@@ -1,5 +1,5 @@
 
-const { addClass, getMyClass, editClass } = require("../controller/classController")
+const { addClass, getMyClass, editClass, getSingleClass } = require("../controller/classController")
 const isAuthenticated = require("../moddleware/isAuthenticated")
 const catchAsync = require("../services/catchAsync")
 
@@ -12,6 +12,7 @@ router.route("/add/:schoolId")
 
 router.route("/edit/:schoolId/:classId")
     .patch(isAuthenticated,catchAsync(editClass))
+    .get(isAuthenticated,catchAsync(getSingleClass))
 
 
 module.exports = router
