@@ -75,7 +75,7 @@ const SchoolDetails = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/class/delete/${schoolId}/${classId}`,
+        `http://localhost:5000/api/class/${schoolId}/${classId}`,
         {
           method: "DELETE",
           headers: {

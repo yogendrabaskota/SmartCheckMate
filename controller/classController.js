@@ -108,6 +108,32 @@ exports.getSingleClass = async(req,res)=>{
     })
 
 }
+exports.deleteClass = async (req, res) => {
+    try {
+        const { schoolId, classId } = req.params;
+
+        // Check if class exists
+        const existingClass = await Class.findOne({ schoolId, _id: classId });
+        if (!existingClass) {
+            return res.status(404).json({
+                message: "Class not found",
+            });
+        }
+
+        // Delete the class
+        await Class.findByIdAndDelete(classId);
+
+        res.status(200).json({
+            message: "Class deleted successfully",
+        });
+    } catch (error) {
+        console.error("Error deleting class:", error);
+        res.status(500).json({
+            message: "Internal server error",
+        });
+    }
+};
+
 
 
 
