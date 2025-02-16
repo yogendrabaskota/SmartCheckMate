@@ -17,6 +17,7 @@ import PersonalAttendance from './pages/student/PresentAttendance'
 import Contact from './components/Contact'
 import Dashboard from './pages/Dashboard'
 import EditSchool from './pages/School/EditSchool'
+import EditClass from './pages/class/EditClass'
 
 function App() {
 
@@ -36,6 +37,8 @@ function App() {
       <Route path="/schoolDetails/:id" element={<SchoolDetails />} />
       <Route path="/add-school" element={<AddSchool />} />
       <Route path="/add-class/:id" element={<AddClass />} />
+      <Route path="/edit-class/:schoolId/:classId" element={<EditClass />} />
+
       <Route path="/classDetails/:schoolId/:classId" element={<ClassDetails />} />
       <Route path="/student/add/:schoolId/:classId" element={<AddStudent />} />
       <Route path="/attendance/today/:schoolId/:classId" element={<TodayAttendance />} />
