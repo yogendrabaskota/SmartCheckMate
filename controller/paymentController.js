@@ -23,9 +23,9 @@ exports.initiateKhaltiPayment = async(req,res)=>{
             'Authorization' : `key ${process.env.AUTHORIZATION}`,
         }
     })
-    console.log(response.data)
+    //console.log(response.data)
     let user = await User.findById(userId)
-    console.log(user)
+   // console.log(user)
     //console.log("ticket",ticket)
     user.paymentDetails.pidx = response.data.pidx
     await user.save()
@@ -51,11 +51,11 @@ exports.verifyPidx = async(req,res)=>{
     if(response.data.status == 'Completed'){
         //database modification
 
-        let ticket = await User.find({'paymentDetails.pidx' : pidx})
+        let user = await User.find({'paymentDetails.pidx' : pidx})
        // console.log(ticket)
-        ticket[0].paymentDetails.method = 'Khalti'
-        ticket[0].paymentDetails.status = 'paid'
-        await ticket[0].save()
+        user[0].paymentDetails.method = 'Khalti'
+        user[0].paymentDetails.status = 'paid'
+        await user[0].save()
 
 
 
