@@ -43,6 +43,10 @@ const Dashboard = () => {
     fetchSchools();
   }, [navigate]);
 
+  const handleAddSchool = () => {
+    navigate("/add-school");
+  };
+
   const handleEditSchool = (schoolId) => {
     navigate(`/school/edit/${schoolId}`);
   };
@@ -102,6 +106,14 @@ const Dashboard = () => {
           ))}
         </div>
       )}
+       <div className="text-center mt-6">
+        <button
+          className="px-6 py-3 bg-green-600 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-green-700 transition-all"
+          onClick={handleAddSchool}
+        >
+          Add New School
+        </button>
+      </div>
     </div>
   );
 };
