@@ -50,7 +50,7 @@ const Home = () => {
   };
 
   const handleChooseSchool = (schoolId) => {
-    navigate(`/schoolDetails/${schoolId}`);
+    navigate(`/schoolDetail/${schoolId}`);
   };
 
   if (loading) {

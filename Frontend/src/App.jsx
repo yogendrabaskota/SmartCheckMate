@@ -18,6 +18,7 @@ import Contact from './components/Contact'
 import Dashboard from './pages/Dashboard'
 import EditSchool from './pages/School/EditSchool'
 import EditClass from './pages/class/EditClass'
+import SchoolDetail from './pages/student/School-Detail-view'
 
 function App() {
 
@@ -32,6 +33,9 @@ function App() {
       <Route path="/contact" element={<Contact />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/school/edit/:schoolId" element={<EditSchool />} />
+      <Route path="/schoolDetail/:id" element={<SchoolDetail />} />
+
+
 
 
       <Route path="/schoolDetails/:id" element={<SchoolDetails />} />
