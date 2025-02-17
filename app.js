@@ -24,6 +24,7 @@ const schoolRoute = require("./route/schoolRoute")
 const classRoute = require("./route/classRoute")
 const studentRoute = require("./route/studentRoute")
 const attendanceRoute = require("./route/attendanceRoute")
+const paymentRoute = require("./route/paymentRoute")
 
 
 
@@ -32,6 +33,7 @@ app.use("/api/school",schoolRoute)
 app.use("/api/class",classRoute)
 app.use("/api/student",studentRoute)
 app.use("/api/student",attendanceRoute)
+app.use("/api/payment",paymentRoute)
 
 
 

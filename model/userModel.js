@@ -24,6 +24,21 @@ const userSchema = new Schema({
        // select : false,
         minlength : 8
     },
+    paymentDetails : {
+        pidx : {
+            type : String
+        },
+        method : {
+            type : String,
+            enum : ['Khalti'],
+            
+        },
+        status : {
+            type : String,
+            enum : ['paid','unpaid','pending'],
+            default : 'unpaid'
+        }
+    }
     
 },{
     timestamps : true
