@@ -24,6 +24,14 @@ const userSchema = new Schema({
        // select : false,
         minlength : 8
     },
+    otp : {
+        type : String
+    },
+    isOtpVerified : {
+        type : Boolean,
+        default : false,
+        //select : false 
+    },
     paymentDetails : {
         pidx : {
             type : String
