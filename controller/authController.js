@@ -205,30 +205,37 @@ exports.verifyotp = async(req,res) => {
     }
 }
 
-// exports.confirmDelete =async(req,res)=>{
-//     const userId = req.user.id
-//     const email = req.user.email
-
-
-//     const userFound = await User.find({email})
-//     //console.log(userFound)
-
-//     if(userFound[0].isOtpVerified !== true){
-//         return res.status(403).json({
-//             message : "You cannot perform this action"
+// exports.verifyotp = async(req,res) => {
+//     const {email,otp} = req.body
+//     if(!email || !otp) {
+//         return res.status(400).json({
+//             message : "Please provide otp and email"
 //         })
 //     }
-
-
-//     userFound[0].isOtpVerified = false
-//     await userFound[0].save()
-//     const tickets = await Ticket.deleteMany({ userId });
-//     const Events = await Event.deleteMany({ createdby: userId });
-//     await User.findByIdAndDelete(userId)
+//     const userExists = await User.find({email})
+//     if(userExists.length == 0) {
+//         return res.status(404).json({
+//             message : "Email is not registered"
+//         })
+//     }
+//     //console.log("userexxist",userExists[0])
+//     //console.log("otp",userExists[0].otp)
+//     //console.log("input",otp)
+//     //console.log(userExists[0].otp !== otp)
     
-//     res.status(200).json({
-//         message : "User deleted successfully"
-//     })
+//     if(userExists[0].otp != otp){
+//         res.status(400).json({
+//             message : "Invalid otp"
+//         })
+//     }else{
+//         // delete after used
+//         userExists[0].otp = undefined
+//         userExists[0].isOtpVerified = true
+//         await userExists[0].save()
+//         res.status(200).json({
+//             message : "Otp is correct"
+//         })
+//     }
 // }
 
 
