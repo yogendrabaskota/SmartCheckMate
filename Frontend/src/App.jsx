@@ -20,6 +20,7 @@ import EditSchool from './pages/School/EditSchool'
 import EditClass from './pages/class/EditClass'
 import SchoolDetail from './pages/student/School-Detail-view'
 import ForgetPassword from './auth/ForgetPassword'
+import VerifyOtp from './auth/VerifyOtp'
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
       <Route path="/school/edit/:schoolId" element={<EditSchool />} />
       <Route path="/schoolDetail/:id" element={<SchoolDetail />} />
       <Route path="/forgetPassword" element={<ForgetPassword />} />
+      <Route path="/verify-otp" element={<VerifyOtp />} />
 
 
 
