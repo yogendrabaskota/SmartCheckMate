@@ -129,7 +129,7 @@ exports.forgetPassword =async(req,res)=>{
     const otp = Math.floor(Math.random() *10000)
     userFound[0].otp = otp
     await userFound[0].save()
-    console.log("This is otp",otp)
+   // console.log("This is otp",otp)
 
     await sendEmail({
         email : email, //to this email
