@@ -21,6 +21,7 @@ import EditClass from './pages/class/EditClass'
 import SchoolDetail from './pages/student/School-Detail-view'
 import ForgetPassword from './auth/ForgetPassword'
 import VerifyOtp from './auth/VerifyOtp'
+import ResetPassword from './auth/ResetPassword'
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
       <Route path="/schoolDetail/:id" element={<SchoolDetail />} />
       <Route path="/forgetPassword" element={<ForgetPassword />} />
       <Route path="/verify-otp" element={<VerifyOtp />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
 
 
 
