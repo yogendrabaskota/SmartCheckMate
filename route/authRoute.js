@@ -1,4 +1,4 @@
-const { registerUser, getAllUser, loginUser, sendData, forgetPassword, verifyotp } = require("../controller/authController")
+const { registerUser, getAllUser, loginUser, sendData, forgetPassword, verifyotp, resetPassword } = require("../controller/authController")
 const isAuthenticated = require("../moddleware/isAuthenticated")
 const catchAsync = require("../services/catchAsync")
 
@@ -21,5 +21,8 @@ router.route("/forget")
     .post(catchAsync(forgetPassword))
 router.route("/verifyOtp")
     .post(catchAsync(verifyotp))
+
+router.route("/resetPassword")
+    .post(catchAsync(resetPassword))
 
 module.exports = router
