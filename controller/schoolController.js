@@ -16,6 +16,17 @@ exports.addSchool = async(req,res)=>{
         })
     }
 
+    const foundName = await School.find({name})
+    //console.log(foundName[0])
+
+    if(foundName[0]){
+        return res.status(400).json({
+            message : "This School Name already exist!! Please use unique School Name"
+        })
+    }
+
+    
+
     const response = await School.create({
         name,
         address,
@@ -55,6 +66,7 @@ exports.getMySchool = async(req,res)=>{
 
 
 }
+
 exports.getSingleSchool = async(req,res)=>{
     const userId = req.user.id 
     const {schoolId} = req.params
@@ -82,9 +94,6 @@ exports.getSingleSchool = async(req,res)=>{
 
 
 }
-
-
-
 
 exports.editSchool = async (req, res) => {
     const { name, address } = req.body;
