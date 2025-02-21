@@ -170,9 +170,6 @@ exports.forgetPassword =async(req,res)=>{
 //      })
 // }
 
-
-
-
 exports.verifyotp = async(req,res) => {
     const {email,otp} = req.body
     if(!email || !otp) {
@@ -205,43 +202,6 @@ exports.verifyotp = async(req,res) => {
         })
     }
 }
-
-
-
-
-// exports.verifyotp = async(req,res) => {
-//     const {email,otp} = req.body
-//     if(!email || !otp) {
-//         return res.status(400).json({
-//             message : "Please provide otp and email"
-//         })
-//     }
-//     const userExists = await User.find({email})
-//     if(userExists.length == 0) {
-//         return res.status(404).json({
-//             message : "Email is not registered"
-//         })
-//     }
-//     //console.log("userexxist",userExists[0])
-//     //console.log("otp",userExists[0].otp)
-//     //console.log("input",otp)
-//     //console.log(userExists[0].otp !== otp)
-    
-//     if(userExists[0].otp != otp){
-//         res.status(400).json({
-//             message : "Invalid otp"
-//         })
-//     }else{
-//         // delete after used
-//         userExists[0].otp = undefined
-//         userExists[0].isOtpVerified = true
-//         await userExists[0].save()
-//         res.status(200).json({
-//             message : "Otp is correct"
-//         })
-//     }
-// }
-
 
 exports.resetPassword = async(req,res) => {
     const{email,newPassword,confirmPassword} = req.body
