@@ -29,8 +29,8 @@ exports.addSchool = async (req, res) => {
     console.log("total",totalSchools)
 
     const checkSchool = await School.find({userId})
-    console.log("checkSchool",checkSchool[0])
-    if (totalSchools >= 2 && checkSchool[0].paymentDetails.status == 'paid'){
+    console.log("checkSchool",checkSchool[checkSchool.length-1])
+    if (totalSchools >= 2 && checkSchool[checkSchool.length-1].paymentDetails.status == 'paid'){
 
         const newSchool = await School.create({
             name,

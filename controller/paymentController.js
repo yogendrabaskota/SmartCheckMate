@@ -25,11 +25,11 @@ exports.initiateKhaltiPayment = async(req,res)=>{
     })
     console.log(response.data)
     let user = await School.find({schoolId})
-    console.log("user",user[0])
+    console.log("user",user[user.length-1])
     
-    user[0].paymentDetails.pidx = response.data.pidx
-    await user[0].save()
-    console.log("paxi ko user",user[0])
+    user[user.length-1].paymentDetails.pidx = response.data.pidx
+    await user[user.length-1].save()
+    console.log("paxi ko user",user[user.length-1])
     // res.redirect(response.data.payment_url)
     res.status(200).json({
         message: "Payment initiation successful",
@@ -54,9 +54,9 @@ exports.verifyPidx = async(req,res)=>{
 
         let user = await School.find({'paymentDetails.pidx' : pidx})
        // console.log(ticket)
-        user[0].paymentDetails.method = 'Khalti'
-        user[0].paymentDetails.status = 'paid'
-        await user[0].save()
+        user[user.length-1].paymentDetails.method = 'Khalti'
+        user[user.length-1].paymentDetails.status = 'paid'
+        await user[user.length-1].save()
 
 
 
