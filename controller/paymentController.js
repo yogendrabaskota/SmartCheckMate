@@ -23,13 +23,13 @@ exports.initiateKhaltiPayment = async(req,res)=>{
             'Authorization' : `key ${process.env.AUTHORIZATION}`,
         }
     })
-    console.log(response.data)
+    //console.log(response.data)
     let user = await School.find({schoolId})
-    console.log("user",user[user.length-1])
+   // console.log("user",user[user.length-1])
     
     user[user.length-1].paymentDetails.pidx = response.data.pidx
     await user[user.length-1].save()
-    console.log("paxi ko user",user[user.length-1])
+   // console.log("updated user",user[user.length-1])
     // res.redirect(response.data.payment_url)
     res.status(200).json({
         message: "Payment initiation successful",

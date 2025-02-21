@@ -30,18 +30,26 @@ const AddSchool = () => {
         { headers: { Authorization: `${token}` } }
       );
 
-      console.log("School Add API Response:", response.data);
-
       if (response.status === 200 && response.data.message === "School created successfully") {
         alert("School added successfully!");
         navigate("/");
         return;
       }
 
-      // Handle payment required scenario
+      // Ask user if they want to add another school 
       if (response.status === 200 && response.data.message === "Payment Required") {
+        const confirmProceed = window.confirm(
+          "To to add more schools, you ahve to pay. Do you want to continue to payment?"
+        );
+
+        if (!confirmProceed) {
+          alert("You can not add more schools without payment.");
+          setLoading(false);
+          return;
+        }
+
         const schoolId = response.data.data.schoolId;
-        const amount = 1000;
+        const amount = 200 * 100;
 
         const paymentResponse = await axios.post(
           "http://localhost:5000/api/payment",
@@ -49,11 +57,9 @@ const AddSchool = () => {
           { headers: { Authorization: `${token}` } }
         );
 
-        console.log("Payment Response:", paymentResponse.data);
-
         if (paymentResponse.data?.payment_url) {
           setPaymentResponse(paymentResponse.data);
-          window.location.href = paymentResponse.data.payment_url; // Redirect to payment
+          window.location.href = paymentResponse.data.payment_url; 
         } else {
           setError("Payment URL is missing in response.");
         }

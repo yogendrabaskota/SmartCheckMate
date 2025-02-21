@@ -51,25 +51,17 @@ exports.addSchool = async (req, res) => {
      
 
 
-    //if (totalSchools >= 2 && )
 
-
-
-
-
-    // If the user has more than 2 schools, enforce payment
-
-    
 
 
     if (totalSchools >= 2) {
         return res.status(200).json({
             message: "Payment Required",
-            data: { name, address, schoolId : userId} // Send back the data so the frontend can use it
+            data: { name, address, schoolId : userId} 
         });
     }
 
-    // Create the new school entry
+
     const newSchool = await School.create({
         name,
         address,
