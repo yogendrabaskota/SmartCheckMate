@@ -16,16 +16,26 @@ exports.addSchool = async(req,res)=>{
         })
     }
 
+    const totalSchool = await School.find({userId})
+    console.log(totalSchool.length)
+
+
+    if(totalSchool.length > 2){
+        return res.status(301).json({
+            message : "Please proceed to payment to add more school"
+        })
+    }
+    
+
     const foundName = await School.find({name})
     //console.log(foundName[0])
-
     if(foundName[0]){
         return res.status(400).json({
             message : "This School Name already exist!! Please use unique School Name"
         })
     }
 
-    
+
 
     const response = await School.create({
         name,
@@ -36,6 +46,7 @@ exports.addSchool = async(req,res)=>{
         message : "School created successfully",
         data : response
     })
+
 
 
 
