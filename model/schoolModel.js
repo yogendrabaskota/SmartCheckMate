@@ -13,6 +13,25 @@ const schoolSchema = new Schema({
     userId : {
         type : mongoose.Schema.ObjectId
     },
+    schoolId : {
+        type : String
+    },
+
+    paymentDetails : {
+        pidx : {
+            type : String
+        },
+        method : {
+            type : String,
+            enum : ['Khalti'],
+            
+        },
+        status : {
+            type : String,
+            enum : ['paid','unpaid','pending'],
+            default : 'unpaid'
+        }
+    }
     
 },{
     timestamps : true

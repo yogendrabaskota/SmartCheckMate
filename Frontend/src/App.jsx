@@ -45,6 +45,9 @@ function App() {
 
 
 
+
+
+
       <Route path="/schoolDetails/:id" element={<SchoolDetails />} />
       <Route path="/add-school" element={<AddSchool />} />
       <Route path="/add-class/:id" element={<AddClass />} />

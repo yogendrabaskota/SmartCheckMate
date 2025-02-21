@@ -1,56 +1,112 @@
 const School = require("../model/schoolModel")
 
-exports.addSchool = async(req,res)=>{
-    const {name,address} = req.body 
+exports.addSchool = async (req, res) => {
+    const { name, address } = req.body;
+    const userId = req.user.id;
 
-    const userId = req.user.id 
-
-    if(!name || !address) {
+    if (!name || !address) {
         return res.status(400).json({
-            message : "Please provide name and address"
-        })
+            message: "Please provide name and address",
+        });
     }
-    if(!userId){
+    if (!userId) {
         return res.status(400).json({
-            message : "You should login"
-        })
+            message: "You should login",
+        });
     }
 
-    const totalSchool = await School.find({userId})
-    console.log(totalSchool.length)
-
-
-    if(totalSchool.length > 2){
-        return res.status(301).json({
-            message : "Please proceed to payment to add more school"
-        })
+    // Check if the school name already exists first
+    const existingSchool = await School.findOne({ name });
+    if (existingSchool) {
+        return res.status(400).json({
+            message: "This School Name already exists! Please use a unique School Name.",
+        });
     }
+
+
+    // Get total number of schools registered by the user
+    const totalSchools = await School.countDocuments({ userId });
+    console.log("total",totalSchools)
+
+    const checkSchool = await School.find({userId})
+    console.log("checkSchool",checkSchool[0])
+    if (totalSchools >= 2 && checkSchool[0].paymentDetails.status == 'paid'){
+
+        const newSchool = await School.create({
+            name,
+            address,
+            schoolId : userId,
+            paymentDetails: {
+                status: "pending",
+            },
+            userId,
+        });
+    
+        return res.status(200).json({
+            message: "School created successfully",
+            data: newSchool,
+        });
+    };
+
+     
+
+
+    //if (totalSchools >= 2 && )
+
+
+
+
+
+    // If the user has more than 2 schools, enforce payment
+
     
 
-    const foundName = await School.find({name})
-    //console.log(foundName[0])
-    if(foundName[0]){
-        return res.status(400).json({
-            message : "This School Name already exist!! Please use unique School Name"
-        })
+
+    if (totalSchools >= 2) {
+        return res.status(200).json({
+            message: "Payment Required",
+            data: { name, address, schoolId : userId} // Send back the data so the frontend can use it
+        });
     }
 
-
-
-    const response = await School.create({
+    // Create the new school entry
+    const newSchool = await School.create({
         name,
         address,
-        userId
-    })
-    res.status(200).json({
-        message : "School created successfully",
-        data : response
-    })
+        schoolId : userId,
+        paymentDetails: {
+            status: "pending",
+        },
+        userId,
+    });
+
+    return res.status(200).json({
+        message: "School created successfully",
+        data: newSchool,
+    });
+};
+
+
+
+// exports.updatePaymentStatus = async (req, res) => {
+//     const { schoolId } = req.body; // Get school ID from frontend
+//     const userId = req.user.id;
+
+//     const school = await School.findOne({ _id: schoolId, userId });
+
+//     if (!school) {
+//         return res.status(404).json({ message: "School not found" });
+//     }
+
+//     school.paymentDetails.status = "completed";
+//     await school.save();
+
+//     res.status(200).json({ message: "Payment completed successfully", data: school });
+// };
 
 
 
 
-}
 
 exports.getMySchool = async(req,res)=>{
     const userId = req.user.id 
