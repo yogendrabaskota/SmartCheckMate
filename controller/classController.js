@@ -13,7 +13,7 @@ exports.addClass = async(req,res)=>{
         })
     }
 
-    const foundName = await Class.find({name})
+    const foundName = await Class.find({name,schoolId})
     //console.log(foundName)
     if(foundName.length >0 ){
         return res.status(400).json({
