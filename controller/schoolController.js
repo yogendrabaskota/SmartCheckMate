@@ -198,9 +198,11 @@ exports.editSchool = async (req, res) => {
 exports.deleteSchool = async (req, res) => {
     try {
         const { schoolId } = req.params;
+        //console.log("schoolId",schoolId)
 
         // Check if class exists
-        const existingSchool = await School.findOne({ schoolId });
+        const existingSchool = await School.find({ schoolId });
+        //console.log("existing school",existingSchool)
         if (!existingSchool) {
             return res.status(404).json({
                 message: "School not found",

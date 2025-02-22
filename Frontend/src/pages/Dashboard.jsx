@@ -55,6 +55,37 @@ const Dashboard = () => {
     navigate(`/schoolDetails/${schoolId}`);
   };
 
+  const handleDeleteSchool = async (schoolId) => {
+    const token = localStorage.getItem("token");
+
+    if (!window.confirm("Are you sure you want to delete this school?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/school/${schoolId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        setSchools(schools.filter((school) => school._id !== schoolId));
+        alert("School deleted successfully!");
+      } else {
+        alert("Failed to delete school!");
+      }
+    } catch (error) {
+      console.error("Error deleting school:", error);
+      alert("Error deleting school. Please try again.");
+    }
+  };
+
   if (loading) {
     return <p className="text-center text-lg mt-10">Loading...</p>;
   }
@@ -80,10 +111,9 @@ const Dashboard = () => {
               hover:shadow-2xl hover:scale-105 transition-all flex flex-col justify-between"
             >
               <h2 className="text-xl font-bold text-blue-900">{school.name}</h2>
-              <p className="text-gray-600 text-sm"> <strong>Located At: </strong> {school.address}</p>
-              {/* <p className="text-gray-600 text-sm">
-                <strong>Created By: </strong> {school.createdBy}
-              </p> */}
+              <p className="text-gray-600 text-sm">
+                <strong>Located At: </strong> {school.address}
+              </p>
 
               {/* Buttons Wrapper */}
               <div className="flex justify-between mt-4">
@@ -96,17 +126,25 @@ const Dashboard = () => {
                 </button>
                 <button
                   className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg 
-                  hover:bg-green-700 transition-all flex-1"
+                  hover:bg-green-700 transition-all flex-1 mr-2"
                   onClick={() => handleEnterSchool(school._id)}
                 >
                   Enter
+                </button>
+                <button
+                  className="px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg 
+                  hover:bg-red-600 transition-all flex-1"
+                  onClick={() => handleDeleteSchool(school._id)}
+                >
+                  Delete
                 </button>
               </div>
             </div>
           ))}
         </div>
       )}
-       <div className="text-center mt-6">
+
+      <div className="text-center mt-6">
         <button
           className="px-6 py-3 bg-green-600 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-green-700 transition-all"
           onClick={handleAddSchool}
