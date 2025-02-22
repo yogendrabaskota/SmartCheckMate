@@ -32,21 +32,21 @@ const userSchema = new Schema({
         default : false,
         //select : false 
     },
-    paymentDetails : {
-        pidx : {
-            type : String
-        },
-        method : {
-            type : String,
-            enum : ['Khalti'],
+    // paymentDetails : {
+    //     pidx : {
+    //         type : String
+    //     },
+    //     method : {
+    //         type : String,
+    //         enum : ['Khalti'],
             
-        },
-        status : {
-            type : String,
-            enum : ['paid','unpaid','pending'],
-            default : 'unpaid'
-        }
-    }
+    //     },
+    //     status : {
+    //         type : String,
+    //         enum : ['paid','unpaid','pending'],
+    //         default : 'unpaid'
+    //     }
+    // }
     
 },{
     timestamps : true
