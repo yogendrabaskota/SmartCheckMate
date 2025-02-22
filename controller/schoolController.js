@@ -26,10 +26,10 @@ exports.addSchool = async (req, res) => {
 
     // Get total number of schools registered by the user
     const totalSchools = await School.countDocuments({ userId });
-    console.log("total",totalSchools)
+   // console.log("total",totalSchools)
 
     const checkSchool = await School.find({userId})
-    console.log("checkSchool",checkSchool[checkSchool.length-1])
+   // console.log("checkSchool",checkSchool[checkSchool.length-1])
     if (totalSchools >= 2 && checkSchool[checkSchool.length-1].paymentDetails.status == 'paid'){
 
         const newSchool = await School.create({
@@ -194,3 +194,29 @@ exports.editSchool = async (req, res) => {
     }
 };
 
+
+exports.deleteSchool = async (req, res) => {
+    try {
+        const { schoolId } = req.params;
+
+        // Check if class exists
+        const existingSchool = await School.findOne({ schoolId });
+        if (!existingSchool) {
+            return res.status(404).json({
+                message: "School not found",
+            });
+        }
+
+        // Delete the class
+        await School.findByIdAndDelete(schoolId);
+
+        res.status(200).json({
+            message: "School deleted successfully",
+        });
+    } catch (error) {
+        console.error("Error deleting School:", error);
+        res.status(500).json({
+            message: "Internal server error",
+        });
+    }
+};
