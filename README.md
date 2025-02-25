@@ -85,8 +85,8 @@ cd Frontend
 
 
 
-### Note:
-- Don't forget to update the API path in the frontend if needed.
+;; ### Note:
+;; - Don't forget to update the API path in the frontend if needed.
 
 
 
