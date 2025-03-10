@@ -16,7 +16,7 @@ exports.addSchool = async (req, res) => {
     }
 
     // Check if the school name already exists first
-    const existingSchool = await School.findOne({ name });
+    const existingSchool = await School.findOne({ name, userId });
     if (existingSchool) {
         return res.status(400).json({
             message: "This School Name already exists! Please use a unique School Name.",
