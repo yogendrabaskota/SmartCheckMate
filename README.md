@@ -100,21 +100,21 @@ cd Frontend
 
 ## Output :
 - Login Page:
-![Homepage Snapshot](frontend/public/login.png)
+![Homepage Snapshot](Frontend/public/login.png)
 - Register Page:
-![Register page Snapshot](frontend/public/register.png)
+![Register page Snapshot](Frontend/public/register.png)
 - Teacher Dashboard:
-![Teacher Dashboard Snapshot](frontend/public/dashboard.png)
+![Teacher Dashboard Snapshot](Frontend/public/dashboard.png)
 - contact Page:
-![Contact page Snapshot](frontend/public/contach.png)
+![Contact page Snapshot](Frontend/public/contach.png)
 - Forget Password:
-![Forget password Snapshot](frontend/public/forgetPW.png)
+![Forget password Snapshot](Frontend/public/forgetPW.png)
 - Reset Password:
-![Reset Password Snapshot](frontend/public/resetPW.png)
+![Reset Password Snapshot](Frontend/public/resetPW.png)
 - Personal Attendance of students:
-![Attendance](frontend/public/personalA)
+![Attendance](Frontend/public/personalA)
 - Daily Attendance
-![Daily Attendance](frontend/public/todayA)
+![Daily Attendance](Frontend/public/todayA)
 
 
 
