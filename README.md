@@ -106,15 +106,15 @@ cd Frontend
 - Teacher Dashboard:
 ![Teacher Dashboard Snapshot](Frontend/public/dashboard.png)
 - contact Page:
-![Contact page Snapshot](Frontend/public/contach.png)
+![Contact page Snapshot](Frontend/public/contact.png)
 - Forget Password:
 ![Forget password Snapshot](Frontend/public/forgetPW.png)
 - Reset Password:
 ![Reset Password Snapshot](Frontend/public/resetPW.png)
 - Personal Attendance of students:
-![Attendance](Frontend/public/personalA)
+![Attendance](Frontend/public/personalA.png)
 - Daily Attendance
-![Daily Attendance](Frontend/public/todayA)
+![Daily Attendance](Frontend/public/todayA.png)
 
 
 
