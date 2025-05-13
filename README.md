@@ -3,7 +3,7 @@
 **SmartCheckMate** is a web based Attendance Management System designed to streamline and manage attendance efficiently. Teachers across the globe can use this platform to record attendance with ease. It provides a simple and intuitive interface, making attendance tracking effortless and error-free.
 
 
-### Click [Here](https://) to visit this site.[upcoming]
+### Click [Here](https://smart-check-mate.vercel.app/) to visit this site.
 
 ---
 ## Features 
@@ -88,29 +88,45 @@ cd Frontend
 ### Note:
 - Don't forget to update the API path in the frontend if needed.
 
-
-
-## Output :
-- Home page:
-![Homepage Snapshot](frontend/public/1.png)
-- Admin Dashboard:
-![Admin Dashboard Snapshot](frontend/public/2.png)
-- Teacher Dashboard:
-![Teacher Dashboard Snapshot](frontend/public/3.png)
-
-
-
 ### To get API documentation, click [Here](https://documenter.getpostman.com/view/33322053/2sAYX3qNWL)
+
 
 ### Backend is live [Here](https://smartcheckmate.onrender.com/)
 
-### Frontend is live [Here]()[upcoming]
+### Frontend is live [Here](https://smart-check-mate.vercel.app/)
+
+
+
+
+## Output :
+- Login Page:
+![Homepage Snapshot](frontend/public/login.png)
+- Register Page:
+![Register page Snapshot](frontend/public/register.png)
+- Teacher Dashboard:
+![Teacher Dashboard Snapshot](frontend/public/dashboard.png)
+- contact Page:
+![Contact page Snapshot](frontend/public/contach.png)
+- Forget Password:
+![Forget password Snapshot](frontend/public/forgetPW.png)
+- Reset Password:
+![Reset Password Snapshot](frontend/public/resetPW.png)
+- Personal Attendance of students:
+![Attendance](frontend/public/personalA)
+- Daily Attendance
+![Daily Attendance](frontend/public/todayA)
+
+
+
+
+
+
+
 
 
 
 ## Feedback
   If you have any feedback, please reach out to me at yogendrabaskota18@gmail.com  
-
 
 
 
