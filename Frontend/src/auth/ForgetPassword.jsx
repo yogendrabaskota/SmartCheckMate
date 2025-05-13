@@ -14,7 +14,7 @@ const ForgetPassword = () => {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/forget", {
+      const response = await fetch("https://smartcheckmate.onrender.com/api/forget", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

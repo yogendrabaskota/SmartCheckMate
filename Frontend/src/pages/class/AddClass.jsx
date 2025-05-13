@@ -8,7 +8,7 @@ const AddClass = () => {
   const navigate = useNavigate();
   const { id:schoolId } = useParams(); // Get schoolId from URL params
 
-  const apiUrl = `http://localhost:5000/api/class/add/${schoolId}`;
+  const apiUrl = `https://smartcheckmate.onrender.com/api/class/add/${schoolId}`;
   console.log(apiUrl)
 
   const handleAddClass = async (e) => {

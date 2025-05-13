@@ -13,7 +13,7 @@ const AttendanceDetails = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(
-          `http://localhost:5000/api/student/present-count/${classId}/${date}`,
+          `https://smartcheckmate.onrender.com/api/student/present-count/${classId}/${date}`,
           {
             method: "GET",
             headers: {

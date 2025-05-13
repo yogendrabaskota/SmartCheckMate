@@ -27,7 +27,7 @@ const Contact = () => {
 
     // Send POST request to the API
     try {
-      const response = await fetch("http://localhost:5000/api/data", {
+      const response = await fetch("https://smartcheckmate.onrender.com/api/data", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

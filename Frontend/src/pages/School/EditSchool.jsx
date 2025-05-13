@@ -25,7 +25,7 @@ const EditSchool = () => {
       }
 
       try {
-        const response = await fetch(`http://localhost:5000/api/school/${schoolId}`, {
+        const response = await fetch(`https://smartcheckmate.onrender.com/api/school/${schoolId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -63,7 +63,7 @@ const EditSchool = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/school/edit/${schoolId}`, {
+      const response = await fetch(`https://smartcheckmate.onrender.com/api/school/edit/${schoolId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

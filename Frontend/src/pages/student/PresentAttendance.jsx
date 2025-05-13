@@ -22,7 +22,7 @@ const PersonalAttendance = () => {
     const fetchAttendance = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/student/do/${classId}/${studentId}`,
+          `https://smartcheckmate.onrender.com/api/student/do/${classId}/${studentId}`,
           {
             method: "GET",
             headers: {

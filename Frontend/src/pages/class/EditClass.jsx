@@ -22,7 +22,7 @@ const EditClass = () => {
       }
 
       try {
-        const response = await fetch(`http://localhost:5000/api/class/${schoolId}/${classId}`, {
+        const response = await fetch(`https://smartcheckmate.onrender.com/api/class/${schoolId}/${classId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -56,7 +56,7 @@ const EditClass = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/class/${schoolId}/${classId}`, {
+      const response = await fetch(`https://smartcheckmate.onrender.com/api/class/${schoolId}/${classId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

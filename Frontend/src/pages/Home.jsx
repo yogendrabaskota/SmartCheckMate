@@ -19,7 +19,7 @@ const Home = () => {
 
     const fetchSchools = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/school/", {
+        const response = await fetch("https://smartcheckmate.onrender.com/api/school/", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

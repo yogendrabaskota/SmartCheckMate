@@ -20,7 +20,7 @@ const ClassDetails = () => {
 
     const fetchAttendanceDates = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/student/getAll/${classId}`, {
+        const response = await fetch(`https://smartcheckmate.onrender.com/api/student/getAll/${classId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -50,7 +50,7 @@ const ClassDetails = () => {
   useEffect(() => {
     const fetchClassDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/class/add/${classId}`, {
+        const response = await fetch(`https://smartcheckmate.onrender.com/api/class/add/${classId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

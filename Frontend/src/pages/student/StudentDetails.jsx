@@ -18,7 +18,7 @@ const StudentDetails = () => {
 
     const fetchStudents = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/student/add/${schoolId}/${classId}`, {
+        const response = await fetch(`https://smartcheckmate.onrender.com/api/student/add/${schoolId}/${classId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

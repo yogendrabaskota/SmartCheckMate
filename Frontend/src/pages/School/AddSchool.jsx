@@ -25,7 +25,7 @@ const AddSchool = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/school/add",
+        "https://smartcheckmate.onrender.com/api/school/add",
         { name, address },
         { headers: { Authorization: `${token}` } }
       );
@@ -52,7 +52,7 @@ const AddSchool = () => {
         const amount = 200 * 100;
 
         const paymentResponse = await axios.post(
-          "http://localhost:5000/api/payment",
+          "https://smartcheckmate.onrender.com/api/payment",
           { schoolId, amount },
           { headers: { Authorization: `${token}` } }
         );
