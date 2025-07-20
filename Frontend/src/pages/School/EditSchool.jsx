@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { FaSchool, FaSave, FaArrowLeft, FaSpinner } from "react-icons/fa";
 
 const EditSchool = () => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { schoolId } = useParams();
-
-  //console.log("schoolId from useParams:", schoolId); // Debugging
 
   useEffect(() => {
     if (!schoolId) {
@@ -18,20 +18,25 @@ const EditSchool = () => {
     }
 
     const fetchSchool = async () => {
+      setLoading(true);
       const token = localStorage.getItem("token");
       if (!token) {
         setError("Unauthorized! Please log in first.");
+        setLoading(false);
         return;
       }
 
       try {
-        const response = await fetch(`https://smartcheckmate.onrender.com/api/school/${schoolId}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `${token}`,
-          },
-        });
+        const response = await fetch(
+          `https://smartcheckmate.onrender.com/api/school/${schoolId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `${token}`,
+            },
+          }
+        );
 
         const data = await response.json();
         if (response.ok) {
@@ -42,6 +47,8 @@ const EditSchool = () => {
         }
       } catch (error) {
         setError("Something went wrong. Please try again.");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -50,84 +57,141 @@ const EditSchool = () => {
 
   const handleEditSchool = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
 
     if (!schoolId) {
       setError("Invalid school ID.");
+      setLoading(false);
       return;
     }
 
     const token = localStorage.getItem("token");
     if (!token) {
       setError("Unauthorized! Please log in first.");
+      setLoading(false);
       return;
     }
 
     try {
-      const response = await fetch(`https://smartcheckmate.onrender.com/api/school/edit/${schoolId}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-        body: JSON.stringify({ name, address }),
-      });
+      const response = await fetch(
+        `https://smartcheckmate.onrender.com/api/school/edit/${schoolId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+          body: JSON.stringify({ name, address }),
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {
-        alert("School updated successfully!");
         navigate("/dashboard");
       } else {
         setError(data.message || "Failed to update school.");
       }
     } catch (error) {
       setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
-      <div className="grid place-items-center mx-2 my-20 sm:my-auto">
-        <div className="w-11/12 p-12 sm:w-8/12 md:w-6/12 lg:w-5/12 2xl:w-4/12 px-6 py-10 sm:px-10 sm:py-6 bg-white rounded-lg shadow-md lg:shadow-lg">
-          <h2 className="text-center font-semibold text-3xl lg:text-4xl text-gray-800">Edit School</h2>
-
-          {error && <p className="text-red-500 text-center mt-4">{error}</p>}
-
-          <form className="mt-10" onSubmit={handleEditSchool}>
-            <label htmlFor="name" className="block text-xs font-semibold text-gray-600 uppercase">
-              School Name
-            </label>
-            <input
-              id="name"
-              type="text"
-              name="name"
-              placeholder="Enter school name"
-              className="block w-full py-3 px-1 mt-2 text-gray-800 border-b-2 border-gray-100 focus:outline-none focus:border-gray-200"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-
-            <label htmlFor="address" className="block text-xs font-semibold text-gray-600 uppercase mt-4">
-              Address
-            </label>
-            <input
-              id="address"
-              type="text"
-              name="address"
-              placeholder="Enter address"
-              className="block w-full py-3 px-1 mt-2 text-gray-800 border-b-2 border-gray-100 focus:outline-none focus:border-gray-200"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              required
-            />
-
+    <div className="min-h-screen bg-[#f0fdf4] flex items-center justify-center p-4">
+      <div className="w-full max-w-lg bg-white rounded-xl shadow-xl overflow-hidden">
+        {/* Header */}
+        <div className="bg-[#10B981] p-6 text-white">
+          <div className="flex items-center justify-between">
             <button
-              type="submit"
-              className="w-full py-3 mt-10 bg-gray-800 rounded-sm font-medium text-white uppercase focus:outline-none hover:bg-gray-700"
+              onClick={() => navigate(-1)}
+              className="flex items-center text-white hover:text-[#1F2937] transition-colors"
             >
-              Update School
+              <FaArrowLeft className="mr-2" />
+              Back
             </button>
-          </form>
+            <h2 className="text-2xl font-bold flex items-center">
+              <FaSchool className="mr-3" />
+              Edit School
+            </h2>
+          </div>
+        </div>
+
+        {/* Form Content */}
+        <div className="p-6 sm:p-8">
+          {error && (
+            <div className="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">
+              {error}
+            </div>
+          )}
+
+          {loading && !name ? (
+            <div className="flex justify-center items-center h-40">
+              <FaSpinner className="animate-spin text-4xl text-[#10B981]" />
+            </div>
+          ) : (
+            <form onSubmit={handleEditSchool}>
+              <div className="mb-6">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-[#1F2937] mb-2"
+                >
+                  School Name
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  placeholder="Enter school name"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10B981] focus:border-[#10B981] transition"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="mb-8">
+                <label
+                  htmlFor="address"
+                  className="block text-sm font-medium text-[#1F2937] mb-2"
+                >
+                  School Address
+                </label>
+                <input
+                  id="address"
+                  type="text"
+                  placeholder="Enter school address"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10B981] focus:border-[#10B981] transition"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className={`w-full py-3 px-4 flex items-center justify-center rounded-lg text-white font-semibold transition-colors shadow-md ${
+                  loading
+                    ? "bg-[#10B981]/70"
+                    : "bg-[#10B981] hover:bg-[#0e9e6d]"
+                }`}
+              >
+                {loading ? (
+                  <>
+                    <FaSpinner className="animate-spin mr-2" />
+                    Updating...
+                  </>
+                ) : (
+                  <>
+                    <FaSave className="mr-2" />
+                    Update School
+                  </>
+                )}
+              </button>
+            </form>
+          )}
         </div>
       </div>
     </div>

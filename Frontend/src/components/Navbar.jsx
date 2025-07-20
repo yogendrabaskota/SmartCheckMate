@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
@@ -16,150 +17,194 @@ const Navbar = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full bg-[#10B981] z-50 shadow-md">
+    <header className="fixed top-0 left-0 w-full bg-[#10B981] z-50 shadow-lg">
       {/* Top Navbar */}
-      <nav className="flex justify-between px-6 items-center py-4">
-        <div className="flex space-x-4 items-center">
-          <div onClick={() => setIsOpen(true)} className="cursor-pointer">
+      <nav className="flex justify-between items-center px-6 py-3 max-w-7xl mx-auto">
+        <div className="flex items-center space-x-3">
+          <div
+            onClick={() => setIsOpen(true)}
+            className="cursor-pointer md:hidden"
+          >
             <img
-              src="../../public/logo.jpg"
+              src="/logo.jpg" // Changed to public directory path
               alt="Logo"
-              className="h-10 w-10 rounded-full object-cover border-2 border-white"
+              className="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm"
             />
           </div>
-          <Link to={"/"}>
-            <h1 className="text-white font-bold text-xl tracking-wide cursor-pointer">
-              𝚂𝚖𝚊𝚛𝚝𝙲𝚑𝚎𝚌𝚔𝙼𝚊𝚝𝚎
+          <Link to={"/"} className="flex items-center space-x-3">
+            <img
+              src="/logo.jpg"
+              alt="Logo"
+              className="hidden md:block h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm"
+            />
+            <h1 className="text-white font-bold text-2xl tracking-tight font-sans">
+              <span className="font-extrabold">Smart</span>
+              <span className="font-light">CheckMate</span>
             </h1>
           </Link>
         </div>
 
-        {/* Navbar Buttons */}
-        <ul className="hidden md:flex space-x-6">
-          <Link to={"/"}>
-            <li className="text-white text-lg font-semibold tracking-normal cursor-pointer hover:text-[#1F2937] transition duration-300">
-              Home
-            </li>
-          </Link>
-          <Link to={"/about"}>
-            <li className="text-white text-lg font-semibold tracking-normal cursor-pointer hover:text-[#1F2937] transition duration-300">
-              About
-            </li>
-          </Link>
-          <Link to={"/contact"}>
-            <li className="text-white text-lg font-semibold tracking-normal cursor-pointer hover:text-[#1F2937] transition duration-300">
-              Contact
-            </li>
-          </Link>
-          {isLoggedIn && (
-            <Link to={"/dashboard"}>
-              <li className="text-white text-lg font-semibold tracking-normal cursor-pointer hover:text-[#1F2937] transition duration-300">
-                Dashboard
-              </li>
-            </Link>
-          )}
+        {/* Desktop Navigation */}
+        <ul className="hidden md:flex items-center space-x-8">
+          <NavItem to="/" text="Home" />
+          <NavItem to="/about" text="About" />
+          <NavItem to="/contact" text="Contact" />
+
           {isLoggedIn ? (
-            <li
-              className="text-white text-lg font-semibold tracking-normal cursor-pointer hover:text-[#1F2937] transition duration-300"
-              onClick={handleLogout}
-            >
-              Logout
-            </li>
+            <>
+              <NavItem to="/dashboard" text="Dashboard" />
+              <button
+                onClick={handleLogout}
+                className="text-white text-lg font-medium hover:text-[#1F2937] transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-white/10"
+              >
+                Logout
+              </button>
+            </>
           ) : (
             <>
-              <Link to={"/login"}>
-                <li className="text-white text-lg font-semibold tracking-normal cursor-pointer hover:text-[#1F2937] transition duration-300">
-                  Login
-                </li>
-              </Link>
-              <Link to={"/register"}>
-                <li className="text-white text-lg font-semibold tracking-normal cursor-pointer hover:text-[#1F2937] transition duration-300">
-                  Register
-                </li>
+              <NavItem to="/login" text="Login" />
+              <Link
+                to="/register"
+                className="bg-white text-[#10B981] font-medium px-4 py-2 rounded-lg hover:bg-white/90 transition-colors duration-200 shadow-md"
+              >
+                Register
               </Link>
             </>
           )}
         </ul>
+
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setIsOpen(true)}
+          className="md:hidden text-white focus:outline-none"
+        >
+          <svg
+            className="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
       </nav>
 
-      {/* Sidebar */}
+      {/* Mobile Sidebar */}
       {isOpen && (
-        <div className="fixed top-0 left-0 w-64 h-full bg-white p-6 shadow-lg z-50">
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-[#1F2937] font-bold text-xl">Menu</h1>
-            <span
-              onClick={() => setIsOpen(false)}
-              className="cursor-pointer text-[#1F2937]"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+        <div
+          className="fixed inset-0 bg-black/50 z-50 md:hidden"
+          onClick={() => setIsOpen(false)}
+        >
+          <div
+            className="fixed top-0 left-0 w-4/5 h-full bg-white shadow-xl transform transition-transform duration-300 ease-in-out"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center p-6 border-b">
+              <h1 className="text-2xl font-bold text-[#1F2937]">Menu</h1>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-gray-500 hover:text-[#10B981]"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </span>
-          </div>
-          <ul className="flex flex-col space-y-4 mt-6">
-            <Link to={"/"} onClick={() => setIsOpen(false)}>
-              <li className="text-[#1F2937] hover:bg-[#10B981] hover:text-white transition duration-300 cursor-pointer p-3 rounded">
-                Home
-              </li>
-            </Link>
-            <Link to={"/about"} onClick={() => setIsOpen(false)}>
-              <li className="text-[#1F2937] hover:bg-[#10B981] hover:text-white transition duration-300 cursor-pointer p-3 rounded">
-                About
-              </li>
-            </Link>
-            <Link to={"/contact"} onClick={() => setIsOpen(false)}>
-              <li className="text-[#1F2937] hover:bg-[#10B981] hover:text-white transition duration-300 cursor-pointer p-3 rounded">
-                Contact
-              </li>
-            </Link>
-            {isLoggedIn && (
-              <>
-                <Link to={"/dashboard"} onClick={() => setIsOpen(false)}>
-                  <li className="text-[#1F2937] hover:bg-[#10B981] hover:text-white transition duration-300 cursor-pointer p-3 rounded">
-                    Dashboard
-                  </li>
-                </Link>
-                <li
-                  className="text-[#1F2937] hover:bg-[#10B981] hover:text-white transition duration-300 cursor-pointer p-3 rounded"
-                  onClick={() => {
-                    handleLogout();
-                    setIsOpen(false);
-                  }}
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  Logout
-                </li>
-              </>
-            )}
-            {!isLoggedIn && (
-              <>
-                <Link to={"/login"} onClick={() => setIsOpen(false)}>
-                  <li className="text-[#1F2937] hover:bg-[#10B981] hover:text-white transition duration-300 cursor-pointer p-3 rounded">
-                    Login
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <ul className="p-4 space-y-2">
+              <MobileNavItem
+                to="/"
+                text="Home"
+                onClick={() => setIsOpen(false)}
+              />
+              <MobileNavItem
+                to="/about"
+                text="About"
+                onClick={() => setIsOpen(false)}
+              />
+              <MobileNavItem
+                to="/contact"
+                text="Contact"
+                onClick={() => setIsOpen(false)}
+              />
+
+              {isLoggedIn ? (
+                <>
+                  <MobileNavItem
+                    to="/dashboard"
+                    text="Dashboard"
+                    onClick={() => setIsOpen(false)}
+                  />
+                  <li
+                    className="text-[#1F2937] hover:bg-[#10B981] hover:text-white px-4 py-3 rounded-lg transition-colors duration-200 cursor-pointer"
+                    onClick={() => {
+                      handleLogout();
+                      setIsOpen(false);
+                    }}
+                  >
+                    Logout
                   </li>
-                </Link>
-                <Link to={"/register"} onClick={() => setIsOpen(false)}>
-                  <li className="text-[#1F2937] hover:bg-[#10B981] hover:text-white transition duration-300 cursor-pointer p-3 rounded">
-                    Register
-                  </li>
-                </Link>
-              </>
-            )}
-          </ul>
+                </>
+              ) : (
+                <>
+                  <MobileNavItem
+                    to="/login"
+                    text="Login"
+                    onClick={() => setIsOpen(false)}
+                  />
+                  <MobileNavItem
+                    to="/register"
+                    text="Register"
+                    onClick={() => setIsOpen(false)}
+                  />
+                </>
+              )}
+            </ul>
+          </div>
         </div>
       )}
     </header>
   );
 };
+
+// Reusable NavItem component for desktop
+const NavItem = ({ to, text }) => (
+  <li>
+    <Link
+      to={to}
+      className="text-white text-lg font-medium hover:text-[#1F2937] transition-colors duration-200 relative group"
+    >
+      {text}
+      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+    </Link>
+  </li>
+);
+
+// Reusable MobileNavItem component
+const MobileNavItem = ({ to, text, onClick }) => (
+  <li>
+    <Link
+      to={to}
+      onClick={onClick}
+      className="block text-[#1F2937] hover:bg-[#10B981] hover:text-white px-4 py-3 rounded-lg transition-colors duration-200"
+    >
+      {text}
+    </Link>
+  </li>
+);
 
 export default Navbar;

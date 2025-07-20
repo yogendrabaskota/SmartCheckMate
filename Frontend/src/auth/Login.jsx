@@ -27,7 +27,6 @@ const Login = () => {
 
       if (response.ok) {
         localStorage.setItem("token", data.token);
-        alert("Login successful!");
         window.location.href = "/";
       } else {
         setError(data.message || "Invalid credentials");

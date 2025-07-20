@@ -1,34 +1,47 @@
-/* eslint-disable react/no-unescaped-entities */
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  FaSpinner,
+  FaClipboardCheck,
+  FaArrowLeft,
+  FaUser,
+  FaCheck,
+  FaTimes,
+} from "react-icons/fa";
 
 const TodayAttendance = () => {
   const { schoolId, classId } = useParams();
+  const navigate = useNavigate();
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
     const fetchStudents = async () => {
       setError("");
+      setSuccess("");
+      setLoading(true);
       const token = localStorage.getItem("token");
 
       if (!token) {
-        alert("Please login to view attendance.");
+        navigate("/login");
         return;
       }
 
       try {
-        const response = await fetch(`https://smartcheckmate.onrender.com/api/student/add/${schoolId}/${classId}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `${token}`,
-          },
-        });
+        const response = await fetch(
+          `https://smartcheckmate.onrender.com/api/student/add/${schoolId}/${classId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `${token}`,
+            },
+          }
+        );
 
         const result = await response.json();
-        console.log(result);
 
         if (!response.ok) {
           throw new Error(result.message || "Failed to fetch students.");
@@ -44,27 +57,30 @@ const TodayAttendance = () => {
     };
 
     fetchStudents();
-  }, [schoolId, classId]);
+  }, [schoolId, classId, navigate]);
 
   const handleAttendance = async (studentId, status) => {
     const token = localStorage.getItem("token");
     if (!token) {
-      alert("Please login to mark attendance.");
+      navigate("/login");
       return;
     }
 
     try {
-      const response = await fetch(`https://smartcheckmate.onrender.com/api/student/do/${classId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-        body: JSON.stringify({
-          studentId,
-          remarks: status,
-        }),
-      });
+      const response = await fetch(
+        `https://smartcheckmate.onrender.com/api/student/do/${classId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+          body: JSON.stringify({
+            studentId,
+            remarks: status,
+          }),
+        }
+      );
 
       const result = await response.json();
 
@@ -72,51 +88,106 @@ const TodayAttendance = () => {
         throw new Error(result.message || "Failed to mark attendance.");
       }
 
-      alert(`Attendance marked as "${status}" for student.`);
+      setSuccess(`Attendance marked as "${status}" for student.`);
+      setTimeout(() => setSuccess(""), 3000);
     } catch (error) {
       console.error("Error marking attendance:", error);
-      alert(error.message);
+      setError(error.message);
+      setTimeout(() => setError(""), 3000);
     }
   };
 
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-4xl font-bold text-center text-gray-800 mb-6 mt-10">Today's Attendance</h1>
-
-      {loading ? (
-        <p className="text-center text-lg text-gray-700">Loading students...</p>
-      ) : error ? (
-        <p className="text-center text-lg text-red-500">{error}</p>
-      ) : students.length === 0 ? (
-        <p className="text-center text-lg text-gray-600">No students found.</p>
-      ) : (
-        <div className="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-          {students.map((student, index) => (
-            <div
-              key={student._id || index}
-              className="p-3 border-b last:border-b-0 text-gray-800 text-lg font-medium flex justify-between items-center"
-            >
-              <span>{index + 1}. {student.name}</span>
-              
-              <div className="space-x-2">
-                <button
-                  className="bg-green-500 text-white px-4 py-1 rounded-lg hover:bg-green-600"
-                  onClick={() => handleAttendance(student._id, "present")}
-                >
-                  Present
-                </button>
-
-                <button
-                  className="bg-red-500 text-white px-4 py-1 rounded-lg hover:bg-red-600"
-                  onClick={() => handleAttendance(student._id, "absent")}
-                >
-                  Absent
-                </button>
-              </div>
-            </div>
-          ))}
+    <div className="min-h-screen bg-[#f0fdf4] p-4 sm:p-6 mt-20">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+          <button
+            onClick={() => navigate(`/classDetails/${schoolId}/${classId}`)}
+            className="flex items-center text-[#10B981] hover:text-[#0e9e6d] transition-colors"
+          >
+            <FaArrowLeft className="mr-2" />
+            Back to Class
+          </button>
+          <h1 className="text-2xl md:text-3xl font-bold text-[#1F2937] flex items-center">
+            <FaClipboardCheck className="text-[#10B981] mr-2" />
+            Today&apos;s Attendance
+          </h1>
         </div>
-      )}
+
+        {/* Status Messages */}
+        {error && (
+          <div className="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="mb-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 rounded">
+            {success}
+          </div>
+        )}
+
+        {/* Student List */}
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <FaSpinner className="animate-spin text-4xl text-[#10B981] mr-4" />
+            <span className="text-[#1F2937]">Loading students...</span>
+          </div>
+        ) : students.length === 0 ? (
+          <div className="text-center p-8 bg-white rounded-xl border-2 border-dashed border-[#10B981]/50">
+            <FaUser className="mx-auto text-4xl text-[#10B981] mb-4" />
+            <p className="text-[#1F2937] text-lg">
+              No students found in this class
+            </p>
+          </div>
+        ) : (
+          <div className="bg-white rounded-xl shadow-lg border border-[#e5e7eb] overflow-hidden">
+            <div className="p-4 bg-[#10B981]/10 border-b border-[#e5e7eb]">
+              <h2 className="text-lg font-semibold text-[#1F2937]">
+                Mark Attendance
+              </h2>
+              <p className="text-sm text-[#6b7280]">
+                {new Date().toLocaleDateString()}
+              </p>
+            </div>
+            <ul className="divide-y divide-[#e5e7eb]">
+              {students.map((student, index) => (
+                <li
+                  key={student._id || index}
+                  className="p-4 hover:bg-[#f8fafc] transition-colors"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-center">
+                      <div className="w-10 h-10 rounded-full bg-[#10B981]/10 flex items-center justify-center mr-3">
+                        <FaUser className="text-[#10B981]" />
+                      </div>
+                      <span className="text-lg text-[#1F2937]">
+                        {index + 1}. {student.name}
+                      </span>
+                    </div>
+                    <div className="flex gap-2 sm:gap-3 justify-end sm:justify-normal">
+                      <button
+                        onClick={() => handleAttendance(student._id, "present")}
+                        className="flex items-center px-3 py-2 sm:px-4 sm:py-2 bg-[#10B981] text-white rounded-lg hover:bg-[#0e9e6d] transition-colors text-sm sm:text-base"
+                      >
+                        <FaCheck className="mr-1 sm:mr-2" />
+                        Present
+                      </button>
+                      <button
+                        onClick={() => handleAttendance(student._id, "absent")}
+                        className="flex items-center px-3 py-2 sm:px-4 sm:py-2 bg-[#ef4444] text-white rounded-lg hover:bg-[#dc2626] transition-colors text-sm sm:text-base"
+                      >
+                        <FaTimes className="mr-1 sm:mr-2" />
+                        Absent
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

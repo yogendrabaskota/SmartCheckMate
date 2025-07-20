@@ -55,7 +55,7 @@ const Contact = () => {
   return (
     <section
       id="contact"
-      className="relative w-full min-h-screen bg-white text-[#1F2937]"
+      className="relative w-full min-h-screen bg-white text-[#1F2937] mt-20"
     >
       <h1 className="text-4xl p-4 font-bold tracking-wide mt-10 text-center">
         Contact

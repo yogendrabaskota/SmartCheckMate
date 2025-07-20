@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { FaSpinner, FaUserPlus, FaArrowLeft } from "react-icons/fa";
 
 const AddStudent = () => {
   const { schoolId, classId } = useParams();
@@ -21,20 +22,23 @@ const AddStudent = () => {
     }
 
     try {
-      const response = await fetch(`https://smartcheckmate.onrender.com/api/student/add/${schoolId}/${classId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-        body: JSON.stringify({ name }),
-      });
+      const response = await fetch(
+        `https://smartcheckmate.onrender.com/api/student/add/${schoolId}/${classId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+          },
+          body: JSON.stringify({ name }),
+        }
+      );
 
       const result = await response.json();
 
       if (response.status === 200) {
-        alert("Student added successfully!");
-        navigate(`/classDetails/${schoolId}/${classId}`); // ✅ Redirect back
+        // navigate(`/classDetails/${schoolId}/${classId}`);
+        navigate(`/student/details/${schoolId}/${classId}`);
       } else {
         throw new Error(result.message || "Failed to add student.");
       }
@@ -46,43 +50,75 @@ const AddStudent = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
-      <div className="grid place-items-center mx-2 my-20 sm:my-auto">
-        <div className="w-11/12 p-12 sm:w-8/12 md:w-6/12 lg:w-5/12 2xl:w-4/12 px-6 py-10 sm:px-10 sm:py-6 bg-white rounded-lg shadow-md lg:shadow-lg">
-          <h2 className="text-center font-semibold text-3xl lg:text-4xl text-gray-800">Add Student</h2>
-
-          {error && <p className="text-red-500 text-center mt-4">{error}</p>}
-
-          <form className="mt-10" onSubmit={handleSubmit}>
-            <label htmlFor="name" className="block text-xs font-semibold text-gray-600 uppercase">
-              Student Name
-            </label>
-            <input
-              id="name"
-              type="text"
-              name="name"
-              placeholder="Enter student name"
-              className="block w-full py-3 px-1 mt-2 text-gray-800 appearance-none border-b-2 border-gray-100 focus:text-gray-500 focus:outline-none focus:border-gray-200"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-
+    <div className="min-h-screen bg-[#f0fdf4] p-6 mt-20">
+      <div className="max-w-md mx-auto mt-10">
+        <div className="bg-white p-8 rounded-xl shadow-lg border border-[#e5e7eb]">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
             <button
-              type="submit"
-              className="w-full py-3 mt-10 bg-gray-800 rounded-sm font-medium text-white uppercase focus:outline-none hover:bg-gray-700 hover:shadow-none"
-              disabled={loading}
+              onClick={() => navigate(-1)}
+              className="flex items-center text-[#10B981] hover:text-[#0e9e6d] transition-colors"
             >
-              {loading ? "Adding..." : "Submit"}
+              <FaArrowLeft className="mr-2" />
+              Back
             </button>
+            <h2 className="text-2xl font-bold text-[#1F2937] flex items-center">
+              <FaUserPlus className="text-[#10B981] mr-2" />
+              Add Student
+            </h2>
+          </div>
 
-            <div className="sm:flex sm:flex-wrap mt-8 sm:mb-4 text-sm text-center">
+          {/* Error Message */}
+          {error && (
+            <div className="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">
+              {error}
+            </div>
+          )}
+
+          {/* Form */}
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-[#1F2937] mb-1"
+              >
+                Student Name
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                className="w-full px-4 py-2 border border-[#e5e7eb] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#10B981] focus:border-transparent"
+                placeholder="e.g. John Smith"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+
+            <div className="flex space-x-4">
               <button
                 type="button"
-                className="flex-1 text-gray-500 underline"
                 onClick={() => navigate(-1)}
+                className="flex-1 px-4 py-2 bg-white border border-[#e5e7eb] text-[#1F2937] rounded-lg hover:bg-gray-50 transition-colors"
               >
                 Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className={`flex-1 px-4 py-2 bg-[#10B981] text-white rounded-lg hover:bg-[#0e9e6d] transition-colors flex items-center justify-center ${
+                  loading ? "opacity-75" : ""
+                }`}
+              >
+                {loading ? (
+                  <>
+                    <FaSpinner className="animate-spin mr-2" />
+                    Adding...
+                  </>
+                ) : (
+                  "Submit"
+                )}
               </button>
             </div>
           </form>

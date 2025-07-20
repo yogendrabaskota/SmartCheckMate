@@ -22,7 +22,6 @@ import ForgetPassword from "./auth/ForgetPassword";
 import VerifyOtp from "./auth/VerifyOtp";
 import ResetPassword from "./auth/ResetPassword";
 import Hero from "./components/Hero";
-import Footer from "./components/Footer";
 import About from "./components/About";
 
 function App() {
@@ -80,7 +79,6 @@ function App() {
             />
           </Routes>
         </main>
-        <Footer />
       </div>
     </BrowserRouter>
   );
