@@ -1,7 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Footer from "./Footer";
 
 const Hero = () => {
+  const navigate = useNavigate();
+
+  const handleGetStarted = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/dashboard");
+    } else {
+      navigate("/register");
+    }
+  };
+
   return (
     <>
       <section className="pt-32 pb-20 px-6 md:px-12 lg:px-24 bg-white">
@@ -16,12 +27,12 @@ const Hero = () => {
               Perfect for schools, businesses, and organizations of all sizes.
             </p>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-              <Link
-                to="/register"
+              <button
+                onClick={handleGetStarted}
                 className="bg-[#10B981] hover:bg-[#0e9e6d] text-white font-semibold py-3 px-8 rounded-lg shadow-md transition duration-300 text-center"
               >
                 Get Started
-              </Link>
+              </button>
               <Link
                 to="/about"
                 className="bg-white border-2 border-[#10B981] text-[#10B981] hover:bg-[#f0fdf4] font-semibold py-3 px-8 rounded-lg shadow-md transition duration-300 text-center"
