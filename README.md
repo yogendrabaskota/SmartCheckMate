@@ -2,57 +2,56 @@
 
 **SmartCheckMate** is a web based Attendance Management System designed to streamline and manage attendance efficiently. Teachers across the globe can use this platform to record attendance with ease. It provides a simple and intuitive interface, making attendance tracking effortless and error-free.
 
-
 ### Click [Here](https://smart-check-mate.vercel.app/) to visit this site.
 
 ---
-## Features 
-- **Teacher Can**:  
-  - Add a school and view all previously added schools.
-  - Add multiple classes to a single school and view all classes within a specific school.
-  - Add students to a class either by entering their names or by specifying the total number of students in a class (which auto-generates roll numbers).
-  - Record attendance for a class once per day and view the list of present/absent students for that day.
-  - View attendance records for all previous days.
-  - Check the total attendance of a specific student.
 
+## Features
 
+- Add a school and view all previously added schools.
+- Add multiple classes to a single school and view all classes within a specific school.
+- Add students to a class either by entering their names or by specifying the total number of students in a class (which auto-generates roll numbers).
+- Record attendance for a class once per day and view the list of present/absent students for that day.
+- View attendance records for all previous days.
+- Check the total attendance of a specific student.
 
+## Technologies Used
 
-## Technologies Used  
+- **Frontend**: React.js, Tailwind CSS
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB
+- **Authentication**: JSON Web Tokens (JWT)
+- **Deployment**:
+  - Frontend: Vercel
+  - Backend: Render
 
-- **Frontend**: React.js, Tailwind CSS  
-- **Backend**: Node.js, Express.js  
-- **Database**: MongoDB  
-- **Authentication**: JSON Web Tokens (JWT)  
-- **Deployment**:  
-  - Frontend: Vercel  
-  - Backend: Render  
+## **Steps to Run**:
 
+#### 1. Clone the repository
 
-
-
-
-## **Steps to Run**:  
-
-
-#### 1. Clone the repository  
-```bash  
+```bash
 git clone https://github.com/yogendrabaskota/SmartCheckMate.git
 
 ```
+
 #### 2. To Run backend
 
 - Install required packages
-```https 
+
+```https
   npm install
-``` 
+```
+
 - Run Backend server
-```https 
+
+```https
   npm start
-``` 
+```
 
 ### Note
-- **Add the environment variable as** 
+
+- **Add the environment variable as**
+
 ```https
 
 DB_URI= GIVE_YOUR_DATABASE_CONNECTION_LINK
@@ -63,72 +62,49 @@ PORT= PORT_NUMBER_TO_RUN_YOUR_BACKEND
 
 ```
 
-
-
 ## To Run Frontend
 
-```https 
+```https
 cd Frontend
-``` 
-- To install required packages 
+```
 
-```https 
+- To install required packages
+
+```https
   npm install
-``` 
+```
 
 - To run project
 
-```https 
+```https
   npm run dev
-``` 
-
-
-
+```
 
 ### Note:
+
 - Don't forget to update the API path in the frontend if needed.
 
 ### To get API documentation, click [Here](https://documenter.getpostman.com/view/33322053/2sAYX3qNWL)
-
 
 ### Backend is live [Here](https://smartcheckmate.onrender.com/)
 
 ### Frontend is live [Here](https://smart-check-mate.vercel.app/)
 
-
-
-
 ## Output :
-- Login Page:
-![Homepage Snapshot](Frontend/public/login.png)
-- Register Page:
-![Register page Snapshot](Frontend/public/register.png)
-- Teacher Dashboard:
-![Teacher Dashboard Snapshot](Frontend/public/dashboard.png)
-- contact Page:
-![Contact page Snapshot](Frontend/public/contact.png)
-- Forget Password:
-![Forget password Snapshot](Frontend/public/forgetPW.png)
-- Reset Password:
-![Reset Password Snapshot](Frontend/public/resetPW.png)
-- Personal Attendance of students:
-![Attendance](Frontend/public/personalA.png)
-- Daily Attendance
-![Daily Attendance](Frontend/public/todayA.png)
 
-
-
-
-
-
-
-
-
+![Home page](Frontend/public/home.png)
+![Register page](Frontend/public/register.png)
+![Login Page](Frontend/public/login.png)
+![About page](Frontend/public/about.png)
+![Contact page](Frontend/public/contact.png)
+![Dashboard](Frontend/public/dashboard.png)
+![Attendance Details](Frontend/public/attendancedetails.png)
+![Class Details](Frontend/public/classdetails.png)
+![School Details](Frontend/public/schooldetails.png)
+![Student List](Frontend/public/studentlist.png)
+![Add School](Frontend/public/addschool.png)
+![Add Student](Frontend/public/addstudent.png)
 
 ## Feedback
-  If you have any feedback, please reach out to me at yogendrabaskota18@gmail.com  
 
-
-
-
-
+If you have any feedback, please reach out to me at yogendrabaskota18@gmail.com
