@@ -88,7 +88,6 @@ const Dashboard = () => {
 
       if (response.ok) {
         setSchools(schools.filter((school) => school._id !== schoolId));
-        alert("School deleted successfully!");
       } else {
         alert("Failed to delete school!");
       }
