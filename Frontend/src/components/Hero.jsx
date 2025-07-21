@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import Footer from "./Footer";
+import About from "./About";
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -68,7 +68,7 @@ const Hero = () => {
           </div>
         </div>
       </section>
-      <Footer />
+      <About />
     </>
   );
 };
