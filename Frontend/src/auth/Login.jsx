@@ -1,40 +1,36 @@
-/* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
+import { loginUser } from "../store/authSlice";
+import { STATUSES } from "../globals/misc/statuses";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const dispatch = useDispatch();
+  const [logindata, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
+  const { status } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setLoginData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    try {
-      const response = await fetch(
-        "https://smartcheckmate.onrender.com/api/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (response.ok) {
-        localStorage.setItem("token", data.token);
-        window.location.href = "/";
-      } else {
-        setError(data.message || "Invalid credentials");
-      }
-    } catch (error) {
-      setError("Something went wrong. Please try again.");
-    }
+    dispatch(loginUser(logindata));
   };
+  useEffect(() => {
+    if (status == STATUSES.SUCCESS) {
+      navigate("/");
+    } else if (status == STATUSES.ERROR) {
+      alert("Login failed. Please try again.");
+    }
+  }, [status, navigate]);
 
   return (
     <div className="flex flex-col min-h-screen bg-[#f0fdf4]">
@@ -44,8 +40,10 @@ const Login = () => {
             Login
           </h2>
 
-          {error && (
-            <p className="text-red-500 text-center mt-4 font-medium">{error}</p>
+          {STATUSES.ERROR && (
+            <p className="text-red-500 text-center mt-4 font-medium">
+              {STATUSES.ERROR}
+            </p>
           )}
 
           <form className="mt-10" onSubmit={handleLogin}>
@@ -62,8 +60,7 @@ const Login = () => {
               placeholder="e-mail address"
               autoComplete="email"
               className="block w-full py-3 px-1 mt-2 text-[#1F2937] appearance-none border-b-2 border-[#10B981] focus:text-[#1F2937] focus:outline-none focus:border-[#0e9e6d]"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleChange}
               required
             />
 
@@ -80,8 +77,7 @@ const Login = () => {
               placeholder="password"
               autoComplete="current-password"
               className="block w-full py-3 px-1 mt-2 mb-4 text-[#1F2937] appearance-none border-b-2 border-[#10B981] focus:text-[#1F2937] focus:outline-none focus:border-[#0e9e6d]"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleChange}
               required
             />
 

@@ -23,64 +23,68 @@ import VerifyOtp from "./auth/VerifyOtp";
 import ResetPassword from "./auth/ResetPassword";
 import Hero from "./components/Hero";
 import About from "./components/About";
+import { Provider } from "react-redux";
+import store from "./store/store";
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-grow">
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Hero />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/forgetPassword" element={<ForgetPassword />} />
-            <Route path="/verify-otp" element={<VerifyOtp />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
+    <Provider store={store}>
+      <BrowserRouter>
+        <div className="flex flex-col min-h-screen">
+          <Navbar />
+          <main className="flex-grow">
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<Hero />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/forgetPassword" element={<ForgetPassword />} />
+              <Route path="/verify-otp" element={<VerifyOtp />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
 
-            {/* Protected Routes (assuming Dashboard and below require auth) */}
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/school/edit/:schoolId" element={<EditSchool />} />
-            <Route path="/schoolDetail/:id" element={<SchoolDetail />} />
-            <Route path="/schoolDetails/:id" element={<SchoolDetails />} />
-            <Route path="/add-school" element={<AddSchool />} />
-            <Route path="/add-class/:id" element={<AddClass />} />
-            <Route
-              path="/edit-class/:schoolId/:classId"
-              element={<EditClass />}
-            />
-            <Route
-              path="/classDetails/:schoolId/:classId"
-              element={<ClassDetails />}
-            />
-            <Route
-              path="/student/add/:schoolId/:classId"
-              element={<AddStudent />}
-            />
-            <Route
-              path="/attendance/today/:schoolId/:classId"
-              element={<TodayAttendance />}
-            />
-            <Route
-              path="/studentdetails/:classId/:date"
-              element={<AttendanceDetails />}
-            />
-            <Route
-              path="/student/details/:schoolId/:classId/"
-              element={<StudentDetails />}
-            />
-            <Route
-              path="/student/detail/:classId/:studentId/"
-              element={<PersonalAttendance />}
-            />
-          </Routes>
-        </main>
-      </div>
-    </BrowserRouter>
+              {/* Protected Routes (assuming Dashboard and below require auth) */}
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/school/edit/:schoolId" element={<EditSchool />} />
+              <Route path="/schoolDetail/:id" element={<SchoolDetail />} />
+              <Route path="/schoolDetails/:id" element={<SchoolDetails />} />
+              <Route path="/add-school" element={<AddSchool />} />
+              <Route path="/add-class/:id" element={<AddClass />} />
+              <Route
+                path="/edit-class/:schoolId/:classId"
+                element={<EditClass />}
+              />
+              <Route
+                path="/classDetails/:schoolId/:classId"
+                element={<ClassDetails />}
+              />
+              <Route
+                path="/student/add/:schoolId/:classId"
+                element={<AddStudent />}
+              />
+              <Route
+                path="/attendance/today/:schoolId/:classId"
+                element={<TodayAttendance />}
+              />
+              <Route
+                path="/studentdetails/:classId/:date"
+                element={<AttendanceDetails />}
+              />
+              <Route
+                path="/student/details/:schoolId/:classId/"
+                element={<StudentDetails />}
+              />
+              <Route
+                path="/student/detail/:classId/:studentId/"
+                element={<PersonalAttendance />}
+              />
+            </Routes>
+          </main>
+        </div>
+      </BrowserRouter>
+    </Provider>
   );
 }
 

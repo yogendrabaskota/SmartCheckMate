@@ -1,41 +1,39 @@
-/* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
+import { registerUser } from "../store/authSlice";
+import { STATUSES } from "../globals/misc/statuses";
 
 const Register = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const dispatch = useDispatch();
+  const [userData, setUserData] = useState({
+    name: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
+  });
   const navigate = useNavigate();
+  const { status } = useSelector((state) => state.auth);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
-    try {
-      const response = await fetch(
-        "https://smartcheckmate.onrender.com/api/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name, email, phoneNumber, password }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (response.ok) {
-        navigate("/login");
-      } else {
-        setError(data.message || "Registration failed");
-      }
-    } catch (error) {
-      setError("Something went wrong. Please try again.");
-    }
+    dispatch(registerUser(userData));
   };
+  useEffect(() => {
+    if (status == STATUSES.SUCCESS) {
+      navigate("/login");
+    } else if (status == STATUSES.ERROR) {
+      alert("Registration failed. Please try again.");
+    }
+  }, [status, navigate]);
 
   return (
     <div className="flex flex-col min-h-screen bg-[#f0fdf4] mt-20">
@@ -45,8 +43,10 @@ const Register = () => {
             Register
           </h2>
 
-          {error && (
-            <p className="text-red-500 text-center mt-4 font-medium">{error}</p>
+          {status === STATUSES.ERROR && (
+            <p className="text-red-500 text-center mt-4 font-medium">
+              {STATUSES.ERROR}
+            </p>
           )}
 
           <form className="mt-10" onSubmit={handleRegister}>
@@ -63,8 +63,8 @@ const Register = () => {
               name="name"
               placeholder="Full Name"
               className="block w-full py-3 px-1 mt-2 text-[#1F2937] appearance-none border-b-2 border-[#10B981] focus:text-[#1F2937] focus:outline-none focus:border-[#0e9e6d]"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              // value={name}
+              onChange={handleChange}
               required
             />
 
@@ -82,8 +82,8 @@ const Register = () => {
               placeholder="e-mail address"
               autoComplete="email"
               className="block w-full py-3 px-1 mt-2 text-[#1F2937] appearance-none border-b-2 border-[#10B981] focus:text-[#1F2937] focus:outline-none focus:border-[#0e9e6d]"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              // value={email}
+              onChange={handleChange}
               required
             />
 
@@ -100,8 +100,8 @@ const Register = () => {
               name="phoneNumber"
               placeholder="Phone Number"
               className="block w-full py-3 px-1 mt-2 text-[#1F2937] appearance-none border-b-2 border-[#10B981] focus:text-[#1F2937] focus:outline-none focus:border-[#0e9e6d]"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
+              // value={phoneNumber}
+              onChange={handleChange}
               required
             />
 
@@ -119,8 +119,8 @@ const Register = () => {
               placeholder="password"
               autoComplete="new-password"
               className="block w-full py-3 px-1 mt-2 mb-4 text-[#1F2937] appearance-none border-b-2 border-[#10B981] focus:text-[#1F2937] focus:outline-none focus:border-[#0e9e6d]"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              // value={password}
+              onChange={handleChange}
               required
             />
 
