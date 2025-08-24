@@ -1,10 +1,13 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { status } = useSelector((state) => state.auth);
+  console.log("Auth Status:", status);
 
   useEffect(() => {
     const token = localStorage.getItem("token");

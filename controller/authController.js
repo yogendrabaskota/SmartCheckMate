@@ -127,6 +127,7 @@ exports.forgetPassword = async (req, res) => {
   });
   res.status(200).json({
     message: "OTP sent successfully",
+    data: email,
   });
 };
 

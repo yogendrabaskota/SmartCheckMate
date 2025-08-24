@@ -1,43 +1,31 @@
-/* eslint-disable no-unused-vars */
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { verifyOTP } from "../store/authSlice";
+import { STATUSES } from "../globals/misc/statuses";
 
 const VerifyOtp = () => {
   const [otp, setOtp] = useState("");
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
-  const location = useLocation();
   const navigate = useNavigate();
-  const email = location.state?.email || "";
-
+  const dispatch = useDispatch();
+  const { forgotPasswordData } = useSelector((state) => state.auth);
+  //  console.log("forgetpasswo", forgotPasswordData);
+  const data = {
+    email: forgotPasswordData.email,
+    otp: otp,
+  };
   const handleVerify = async (e) => {
     e.preventDefault();
-    setMessage("");
-    setError("");
-
-    try {
-      const response = await fetch(
-        "https://smartcheckmate.onrender.com/api/verifyOtp",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, otp }),
-        }
-      );
-
-      const data = await response.json();
-      if (response.ok) {
-        setMessage("OTP verified successfully!");
-        navigate("/reset-password", { state: { email } });
-      } else {
-        setError(data.message || "Invalid OTP. Please try again.");
-      }
-    } catch (error) {
-      setError("Failed to verify OTP. Please try again.");
-    }
+    dispatch(verifyOTP(data));
   };
+  useEffect(() => {
+    if (forgotPasswordData.status === STATUSES.SUCCESS) {
+      alert("OTP verified successfully. You can now reset your password.");
+      navigate("/reset-password");
+    } else if (forgotPasswordData.status === STATUSES.ERROR) {
+      alert("OTP verification failed. Please try again.");
+    }
+  }, [forgotPasswordData.status, navigate]);
 
   return (
     <div className="flex flex-col min-h-screen bg-[#f0fdf4]">
@@ -47,26 +35,13 @@ const VerifyOtp = () => {
             Verify OTP
           </h2>
 
-          {message && (
-            <p className="text-green-600 text-center mt-4 font-medium">
-              {message}
+          {STATUSES.ERROR && (
+            <p className="text-red-500 text-center mt-4 font-medium">
+              {STATUSES.ERROR}
             </p>
-          )}
-          {error && (
-            <p className="text-red-500 text-center mt-4 font-medium">{error}</p>
           )}
 
           <form className="mt-10" onSubmit={handleVerify}>
-            <label className="block text-sm font-semibold text-[#1F2937] uppercase">
-              E-mail
-            </label>
-            <input
-              type="email"
-              value={email}
-              readOnly
-              className="block w-full py-3 px-1 mt-2 text-[#1F2937] bg-gray-100 border-b-2 border-[#10B981] focus:outline-none rounded-t"
-            />
-
             <label className="block mt-6 text-sm font-semibold text-[#1F2937] uppercase">
               OTP
             </label>

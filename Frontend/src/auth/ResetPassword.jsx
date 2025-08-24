@@ -1,49 +1,60 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { resetPassword } from "../store/authSlice";
+import { STATUSES } from "../globals/misc/statuses";
 
 const ResetPassword = () => {
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
-  const location = useLocation();
+  const [userData, setUserData] = useState({
+    newPassword: "",
+    confirmPassword: "",
+  });
   const navigate = useNavigate();
-  const email = location.state?.email || "";
+  const dispatch = useDispatch();
 
+  const { forgotPasswordData, status } = useSelector((state) => state.auth);
+  //  console.log("forgetpasswo", forgotPasswordData);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData((preData) => ({
+      ...preData,
+      [name]: value,
+    }));
+  };
+
+  const newPassword = userData.newPassword;
+  const confirmPassword = userData.confirmPassword;
+  const data = {
+    email: forgotPasswordData.email,
+    newPassword,
+    confirmPassword,
+  };
+
+  console.log("payload data", data);
   const handleResetPassword = async (e) => {
-    e.preventDefault();
-    setMessage("");
-    setError("");
-
-    if (newPassword !== confirmPassword) {
-      setError("Passwords do not match");
+    if (userData.newPassword !== userData.confirmPassword) {
+      alert("Passwords do not match!");
       return;
     }
 
-    try {
-      const response = await fetch(
-        "https://smartcheckmate.onrender.com/api/resetPassword",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, newPassword, confirmPassword }),
-        }
-      );
-
-      const data = await response.json();
-      if (response.ok) {
-        setMessage("Password reset successfully!");
-        setTimeout(() => navigate("/login"), 1500);
-      } else {
-        setError(data.message || "Failed to reset password");
-      }
-    } catch (error) {
-      setError("Something went wrong. Please try again.");
+    if (!forgotPasswordData.email) {
+      alert("Email is missing from reset request.");
+      return;
     }
+    e.preventDefault();
+    dispatch(resetPassword(data));
   };
+
+  useEffect(() => {
+    if (status === STATUSES.SUCCESS) {
+      alert("Reset Password successfully");
+      navigate("/login");
+    } else if (status === STATUSES.ERROR) {
+      alert("something went wrong");
+    }
+  }, [status, navigate]);
 
   return (
     <div className="flex flex-col min-h-screen bg-[#f0fdf4]">
@@ -53,35 +64,23 @@ const ResetPassword = () => {
             Reset Password
           </h2>
 
-          {message && (
-            <p className="text-green-600 text-center mt-4 font-medium">
-              {message}
+          {status === STATUSES.ERROR && (
+            <p className="text-red-500 text-center mt-4 font-medium">
+              Something Went wrongg
             </p>
-          )}
-          {error && (
-            <p className="text-red-500 text-center mt-4 font-medium">{error}</p>
           )}
 
           <form className="mt-10" onSubmit={handleResetPassword}>
-            <label className="block text-sm font-semibold text-[#1F2937] uppercase">
-              E-mail
-            </label>
-            <input
-              type="email"
-              value={email}
-              readOnly
-              className="block w-full py-3 px-1 mt-2 text-[#1F2937] bg-gray-100 border-b-2 border-[#10B981] focus:outline-none rounded-t"
-            />
-
             <label className="block mt-6 text-sm font-semibold text-[#1F2937] uppercase">
               New Password
             </label>
             <input
               type="password"
+              name="newPassword"
               placeholder="Enter new password"
               className="block w-full py-3 px-1 mt-2 text-[#1F2937] appearance-none border-b-2 border-[#10B981] focus:outline-none focus:border-[#0e9e6d]"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
+              value={userData.newPassword}
+              onChange={handleChange}
               required
             />
 
@@ -90,10 +89,11 @@ const ResetPassword = () => {
             </label>
             <input
               type="password"
+              name="confirmPassword"
               placeholder="Confirm new password"
               className="block w-full py-3 px-1 mt-2 text-[#1F2937] appearance-none border-b-2 border-[#10B981] focus:outline-none focus:border-[#0e9e6d]"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={userData.confirmPassword}
+              onChange={handleChange}
               required
             />
 

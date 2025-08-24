@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://smartcheckmate.onrender.com/api",
+  //   baseURL: "https://smartcheckmate.onrender.com/api",
+  baseURL: "http://localhost:5000/api",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -9,11 +10,12 @@ const API = axios.create({
 });
 
 const APIAuthenticated = axios.create({
-  baseURL: "https://smartcheckmate.onrender.com/api",
+  //   baseURL: "https://smartcheckmate.onrender.com/api",
+  baseURL: "http://localhost:5000/api",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
+    Authorization: `${localStorage.getItem("token")}`,
   },
 });
 
