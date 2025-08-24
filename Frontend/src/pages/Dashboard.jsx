@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -8,13 +9,18 @@ import {
   FaSignInAlt,
   FaSearch,
 } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { STATUSES } from "../globals/misc/statuses";
+import { deleteSchool, fetchSchool } from "../store/schoolSlice";
 
 const Dashboard = () => {
-  const [schools, setSchools] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-
+  const { schools, status } = useSelector((state) => state.school);
+  const { currentSchool } = useSelector((state) => state.school);
+  console.log("single school", currentSchool);
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -23,37 +29,8 @@ const Dashboard = () => {
       navigate("/login");
       return;
     }
-
-    const fetchSchools = async () => {
-      try {
-        const response = await fetch(
-          "https://smartcheckmate.onrender.com/api/school/",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `${token}`,
-            },
-          }
-        );
-
-        const result = await response.json();
-
-        if (result.data) {
-          setSchools(Array.isArray(result.data) ? result.data : [result.data]);
-        } else {
-          setSchools([]);
-        }
-      } catch (error) {
-        console.error("Error fetching schools:", error);
-        setSchools([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSchools();
-  }, [navigate]);
+    dispatch(fetchSchool());
+  }, [navigate, dispatch]);
 
   const handleAddSchool = () => {
     navigate("/add-school");
@@ -68,32 +45,14 @@ const Dashboard = () => {
   };
 
   const handleDeleteSchool = async (schoolId) => {
-    const token = localStorage.getItem("token");
-
     if (!window.confirm("Are you sure you want to delete this school?")) {
       return;
     }
-
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/school/${schoolId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `${token}`,
-          },
-        }
-      );
-
-      if (response.ok) {
-        setSchools(schools.filter((school) => school._id !== schoolId));
-      } else {
-        alert("Failed to delete school!");
-      }
+      await dispatch(deleteSchool(schoolId));
     } catch (error) {
+      alert("Failed to delete school!");
       console.error("Error deleting school:", error);
-      alert("Error deleting school. Please try again.");
     }
   };
 
@@ -103,7 +62,7 @@ const Dashboard = () => {
       school.address.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) {
+  if (status === STATUSES.ERROR) {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#10B981]"></div>
