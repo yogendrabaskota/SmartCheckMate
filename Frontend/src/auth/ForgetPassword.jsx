@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -33,9 +32,9 @@ const ForgetPassword = () => {
             Forgot Password
           </h2>
 
-          {STATUSES.ERROR && (
+          {status === STATUSES.ERROR && (
             <p className="text-red-500 text-center mt-4 font-medium">
-              {STATUSES.ERROR}
+              Something went Wrong
             </p>
           )}
 

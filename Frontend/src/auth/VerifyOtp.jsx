@@ -35,9 +35,9 @@ const VerifyOtp = () => {
             Verify OTP
           </h2>
 
-          {STATUSES.ERROR && (
+          {status === STATUSES.ERROR && (
             <p className="text-red-500 text-center mt-4 font-medium">
-              {STATUSES.ERROR}
+              Something went wrong
             </p>
           )}
 
