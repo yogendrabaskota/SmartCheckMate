@@ -1,7 +1,11 @@
-import { useState } from "react";
+/* eslint-disable no-unused-vars */
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import { FaSchool, FaSpinner, FaArrowLeft } from "react-icons/fa";
+import axios from "axios";
+import { createSchool } from "../../store/schoolSlice";
+import { STATUSES } from "../../globals/misc/statuses";
 
 const AddSchool = () => {
   const [name, setName] = useState("");
@@ -10,6 +14,8 @@ const AddSchool = () => {
   const [loading, setLoading] = useState(false);
   const [paymentResponse, setPaymentResponse] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { status } = useSelector((state) => state.school);
 
   const handleAddSchool = async (e) => {
     e.preventDefault();
@@ -24,24 +30,20 @@ const AddSchool = () => {
     }
 
     try {
-      const response = await axios.post(
-        "https://smartcheckmate.onrender.com/api/school/add",
-        { name, address },
-        { headers: { Authorization: `${token}` } }
-      );
+      // Dispatch the createSchool thunk
+      const result = await dispatch(createSchool({ name, address }));
 
-      if (
-        response.status === 200 &&
-        response.data.message === "School created successfully"
-      ) {
+      console.log("resumtt", result);
+      if (result?.error) {
+        setError(result.error.message || "Something went wrong.");
+        return;
+      }
+      if (result?.message === "School created successfully") {
         navigate("/dashboard");
         return;
       }
 
-      if (
-        response.status === 200 &&
-        response.data.message === "Payment Required"
-      ) {
+      if (result?.message === "Payment Required") {
         const confirmProceed = window.confirm(
           "To add more schools, you need to pay. Do you want to continue to payment?"
         );
@@ -52,7 +54,7 @@ const AddSchool = () => {
           return;
         }
 
-        const schoolId = response.data.data.schoolId;
+        const schoolId = result.data.schoolId;
         const amount = 200 * 100;
 
         const paymentResponse = await axios.post(

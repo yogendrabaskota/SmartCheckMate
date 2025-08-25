@@ -20,10 +20,14 @@ const classSlice = createSlice({
         (item) => item._id !== action.payload
       );
     },
+    addClass(state, action) {
+      state.classes.push(action.payload);
+    },
   },
 });
 
-export const { setClass, setStatus, removeClass } = classSlice.actions;
+export const { setClass, setStatus, removeClass, addClass } =
+  classSlice.actions;
 export default classSlice.reducer;
 
 export function fetchClass(id) {
@@ -53,6 +57,25 @@ export function deleteClass(schoolId, classId) {
       if (response.status === 200) {
         dispatch(setStatus(STATUSES.SUCCESS));
         dispatch(removeClass(classId));
+      }
+    } catch (error) {
+      console.log(error.message);
+      dispatch(setStatus(STATUSES.ERROR));
+    }
+  };
+}
+
+export function createClass(schoolId, name) {
+  return async function addClassThunk(dispatch) {
+    dispatch(setStatus(STATUSES.LOADING));
+    try {
+      const response = await APIAuthenticated.post(`/class/add/${schoolId}`, {
+        name,
+      });
+      if (response.status === 200) {
+        dispatch(addClass(response.data.data));
+        dispatch(setStatus(STATUSES.SUCCESS));
+        return response.data;
       }
     } catch (error) {
       console.log(error.message);

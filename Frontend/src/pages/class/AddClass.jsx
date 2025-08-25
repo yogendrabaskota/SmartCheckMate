@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaSpinner, FaChalkboardTeacher, FaArrowLeft } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { createClass } from "../../store/classSlice";
 
 const AddClass = () => {
   const [className, setClassName] = useState("");
@@ -9,8 +11,7 @@ const AddClass = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { id: schoolId } = useParams();
-
-  const apiUrl = `https://smartcheckmate.onrender.com/api/class/add/${schoolId}`;
+  const dispatch = useDispatch();
 
   const handleAddClass = async (e) => {
     e.preventDefault();
@@ -26,24 +27,16 @@ const AddClass = () => {
     }
 
     try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-        body: JSON.stringify({ name: className }),
-      });
+      const result = await dispatch(createClass(schoolId, className));
 
-      const data = await response.json();
-
-      if (response.ok) {
-        navigate(`/schoolDetails/${schoolId}`);
+      if (result?.error) {
+        setError(result.error.message || "Failed to add class.");
       } else {
-        setError(data.message || "Failed to add class.");
+        navigate(`/schoolDetails/${schoolId}`);
       }
     } catch (error) {
       setError("Something went wrong. Please try again.");
+      console.error("Add class error:", error);
     } finally {
       setIsLoading(false);
     }

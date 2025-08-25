@@ -24,10 +24,13 @@ const schoolSlice = createSlice({
         (school) => school._id !== action.payload
       );
     },
+    addSchool(state, action) {
+      state.schools.push(action.payload);
+    },
   },
 });
 
-export const { setSchools, setSchool, setStatus, removeSchool } =
+export const { setSchools, setSchool, setStatus, removeSchool, addSchool } =
   schoolSlice.actions;
 export default schoolSlice.reducer;
 
@@ -71,6 +74,24 @@ export function deleteSchool(id) {
       if (response.status === 200) {
         dispatch(removeSchool(id));
         dispatch(setStatus(STATUSES.SUCCESS));
+      }
+    } catch (error) {
+      console.log(error.message);
+      dispatch(setStatus(STATUSES.ERROR));
+    }
+  };
+}
+
+export function createSchool(schoolData) {
+  return async function createSchoolThunk(dispatch) {
+    dispatch(setStatus(STATUSES.LOADING));
+    try {
+      const response = await APIAuthenticated.post(`/school/add`, schoolData);
+      if (response.status === 200) {
+        dispatch(addSchool(response.data.data));
+        // console.log("add school data", response.data.data);
+        dispatch(setStatus(STATUSES.SUCCESS));
+        return response.data;
       }
     } catch (error) {
       console.log(error.message);
