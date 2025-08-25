@@ -9,10 +9,11 @@ const Navbar = () => {
   const { status } = useSelector((state) => state.auth);
   console.log("Auth Status:", status);
 
+  const token = localStorage.getItem("token");
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
-  }, []);
+  }, [token]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");

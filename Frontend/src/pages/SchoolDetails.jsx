@@ -10,15 +10,19 @@ import {
   FaSpinner,
   FaSearch,
 } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteClass, fetchClass } from "../store/classSlice";
+import { STATUSES } from "../globals/misc/statuses";
 
 const SchoolDetails = () => {
+  const dispatch = useDispatch();
+  const { classes, status } = useSelector((state) => state.class); // Fixed destructuring
   const { id: schoolId } = useParams();
   const navigate = useNavigate();
-  const [classes, setClasses] = useState([]);
-  const [loading, setLoading] = useState(true);
+
   const [schoolName, setSchoolName] = useState("");
-  const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const loading = status === STATUSES.LOADING; // Use ===
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -28,46 +32,16 @@ const SchoolDetails = () => {
       navigate("/login");
       return;
     }
-
-    const fetchClasses = async () => {
-      setLoading(true);
-      setError("");
-      try {
-        const response = await fetch(
-          `https://smartcheckmate.onrender.com/api/class/add/${schoolId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `${token}`,
-            },
-          }
-        );
-
-        const result = await response.json();
-
-        if (result.data) {
-          setClasses(Array.isArray(result.data) ? result.data : [result.data]);
-          if (result.data.length > 0 && result.data[0].schoolId) {
-            setSchoolName(result.data[0].schoolId.name);
-          }
-        } else {
-          setClasses([]);
-          setError("No classes found for this school");
-        }
-      } catch (error) {
-        console.error("Error fetching classes:", error);
-        setError("Failed to load classes. Please try again.");
-        setClasses([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     if (schoolId) {
-      fetchClasses();
+      dispatch(fetchClass(schoolId));
     }
-  }, [schoolId, navigate]);
+  }, [schoolId, navigate, dispatch]);
+
+  useEffect(() => {
+    if (classes.length > 0 && classes[0].schoolId) {
+      setSchoolName(classes[0].schoolId.name);
+    }
+  }, [classes]);
 
   const filteredClasses = classes.filter(
     (classItem) =>
@@ -89,35 +63,16 @@ const SchoolDetails = () => {
   };
 
   const handleDeleteClass = async (classId) => {
-    const token = localStorage.getItem("token");
-
+    // Only need classId parameter
     if (!window.confirm("Are you sure you want to delete this class?")) {
+      // Fixed message
       return;
     }
-
     try {
-      const response = await fetch(
-        `https://smartcheckmate.onrender.com/api/class/${schoolId}/${classId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `${token}`,
-          },
-        }
-      );
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setClasses(classes.filter((classItem) => classItem._id !== classId));
-        alert("Class deleted successfully!");
-      } else {
-        alert(data.message || "Failed to delete class.");
-      }
+      await dispatch(deleteClass(schoolId, classId)); // schoolId from useParams
     } catch (error) {
+      alert("Failed to delete class!"); // Fixed message
       console.error("Error deleting class:", error);
-      alert("Something went wrong. Please try again.");
     }
   };
 
@@ -175,9 +130,9 @@ const SchoolDetails = () => {
         </div>
 
         {/* Error Message */}
-        {error && (
+        {status === STATUSES.ERROR && ( // Use ===
           <div className="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">
-            {error}
+            Something Went Wrong
           </div>
         )}
 
@@ -248,7 +203,7 @@ const SchoolDetails = () => {
                       <FaEdit />
                     </button>
                     <button
-                      onClick={() => handleDeleteClass(classItem._id)}
+                      onClick={() => handleDeleteClass(classItem._id)} // Only pass classId
                       className="text-gray-500 hover:text-[#ef4444] transition-colors"
                       title="Delete Class"
                     >
