@@ -3,7 +3,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
-import Home from "./pages/Home";
+// import Home from "./pages/Home";
 import SchoolDetails from "./pages/SchoolDetails";
 import AddSchool from "./pages/School/AddSchool";
 import AddClass from "./pages/class/AddClass";
@@ -36,7 +36,7 @@ function App() {
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={<Hero />} />
-              <Route path="/home" element={<Home />} />
+              {/* <Route path="/home" element={<Home />} /> */}
               <Route path="/about" element={<About />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -29,8 +28,10 @@ const Dashboard = () => {
       navigate("/login");
       return;
     }
-    dispatch(fetchSchool());
-  }, [navigate, dispatch]);
+    if (schools.length === 0) {
+      dispatch(fetchSchool());
+    }
+  }, [navigate, dispatch, schools.length]);
 
   const handleAddSchool = () => {
     navigate("/add-school");

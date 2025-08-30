@@ -33,7 +33,7 @@ const AddSchool = () => {
       // Dispatch the createSchool thunk
       const result = await dispatch(createSchool({ name, address }));
 
-      console.log("resumtt", result);
+      // console.log("resumtt", result);
       if (result?.error) {
         setError(result.error.message || "Something went wrong.");
         return;

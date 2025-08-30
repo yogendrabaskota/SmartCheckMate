@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -16,13 +17,15 @@ import { STATUSES } from "../globals/misc/statuses";
 
 const SchoolDetails = () => {
   const dispatch = useDispatch();
-  const { classes, status } = useSelector((state) => state.class); // Fixed destructuring
+  const { classesBySchool, status } = useSelector((state) => state.class);
   const { id: schoolId } = useParams();
   const navigate = useNavigate();
 
   const [schoolName, setSchoolName] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const loading = status === STATUSES.LOADING; // Use ===
+  const loading = status === STATUSES.LOADING;
+
+  const classes = classesBySchool[schoolId] || [];
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -32,6 +35,7 @@ const SchoolDetails = () => {
       navigate("/login");
       return;
     }
+
     if (schoolId) {
       dispatch(fetchClass(schoolId));
     }
@@ -63,15 +67,13 @@ const SchoolDetails = () => {
   };
 
   const handleDeleteClass = async (classId) => {
-    // Only need classId parameter
     if (!window.confirm("Are you sure you want to delete this class?")) {
-      // Fixed message
       return;
     }
     try {
-      await dispatch(deleteClass(schoolId, classId)); // schoolId from useParams
+      await dispatch(deleteClass(schoolId, classId));
     } catch (error) {
-      alert("Failed to delete class!"); // Fixed message
+      alert("Failed to delete class!");
       console.error("Error deleting class:", error);
     }
   };
@@ -129,14 +131,12 @@ const SchoolDetails = () => {
           </div>
         </div>
 
-        {/* Error Message */}
-        {status === STATUSES.ERROR && ( // Use ===
+        {status === STATUSES.ERROR && (
           <div className="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">
             Something Went Wrong
           </div>
         )}
 
-        {/* Classes Grid */}
         {classes.length === 0 ? (
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
             <div className="mx-auto w-24 h-24 bg-[#f0fdf4] rounded-full flex items-center justify-center mb-4">
@@ -203,7 +203,7 @@ const SchoolDetails = () => {
                       <FaEdit />
                     </button>
                     <button
-                      onClick={() => handleDeleteClass(classItem._id)} // Only pass classId
+                      onClick={() => handleDeleteClass(classItem._id)}
                       className="text-gray-500 hover:text-[#ef4444] transition-colors"
                       title="Delete Class"
                     >
