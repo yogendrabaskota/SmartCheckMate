@@ -1,7 +1,9 @@
 const express = require("express");
 const { connectDatabase } = require("./database/database");
-
+const helmet = require("helmet");
 const app = express();
+const rateLimit = require("express-rate-limit");
+const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
 
 connectDatabase();
 
@@ -11,6 +13,8 @@ app.use(express.urlencoded({ extended: true }));
 
 const cors = require("cors");
 app.use(cors());
+app.use(helmet());
+app.use(limiter);
 
 app.get("/", (req, res) => {
   res.status(200).json({
