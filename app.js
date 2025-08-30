@@ -3,7 +3,10 @@ const { connectDatabase } = require("./database/database");
 const helmet = require("helmet");
 const app = express();
 const rateLimit = require("express-rate-limit");
-const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+});
 
 connectDatabase();
 
@@ -36,6 +39,10 @@ app.use("/api/student", studentRoute);
 app.use("/api/student", attendanceRoute);
 app.use("/api/payment", paymentRoute);
 
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: "Internal server error" });
+});
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
