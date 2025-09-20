@@ -18,5 +18,6 @@ const APIAuthenticated = axios.create({
     Authorization: `${localStorage.getItem("token")}`,
   },
 });
+// console.log("token", `${localStorage.getItem("token")}`);
 
 export { API, APIAuthenticated };

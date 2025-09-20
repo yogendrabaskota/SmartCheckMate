@@ -36,6 +36,7 @@ const AddSchool = () => {
       // console.log("resumtt", result);
       if (result?.error) {
         setError(result.error.message || "Something went wrong.");
+        console.log("error hwewewew");
         return;
       }
       if (result?.message === "School created successfully") {

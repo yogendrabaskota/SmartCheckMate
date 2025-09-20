@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { registerUser } from "../store/authSlice";
+import { registerUser, setStatus } from "../store/authSlice";
 import { STATUSES } from "../globals/misc/statuses";
 
 const Register = () => {
@@ -29,11 +29,13 @@ const Register = () => {
   };
   useEffect(() => {
     if (status == STATUSES.SUCCESS) {
+      console.log("here");
       navigate("/login");
+      dispatch(setStatus(STATUSES.IDLE));
     } else if (status == STATUSES.ERROR) {
       alert("Registration failed. Please try again.");
     }
-  }, [status, navigate]);
+  }, [status, navigate, dispatch]);
 
   return (
     <div className="flex flex-col min-h-screen bg-[#f0fdf4] mt-20">

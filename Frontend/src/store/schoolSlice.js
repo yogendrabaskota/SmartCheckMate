@@ -86,6 +86,7 @@ export function createSchool(schoolData) {
   return async function createSchoolThunk(dispatch) {
     dispatch(setStatus(STATUSES.LOADING));
     try {
+      console.log("school data", schoolData);
       const response = await APIAuthenticated.post(`/school/add`, schoolData);
       if (response.status === 200) {
         dispatch(addSchool(response.data.data));

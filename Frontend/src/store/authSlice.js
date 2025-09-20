@@ -5,12 +5,12 @@ import { API, APIAuthenticated } from "../globals/http";
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: [],
-    status: STATUSES.LOADING,
+    user: null,
+    status: STATUSES.IDLE,
     token: "",
     forgotPasswordData: {
       email: "",
-      status: STATUSES.LOADING,
+      status: STATUSES.IDLE,
     },
   },
   reducers: {
@@ -26,6 +26,7 @@ const authSlice = createSlice({
     setEmail(state, action) {
       state.forgotPasswordData.email = action.payload;
     },
+
     setForgotPasswordDataStatus(state, action) {
       state.forgotPasswordData.status = action.payload;
     },
@@ -47,7 +48,7 @@ export function registerUser(data) {
     try {
       const response = await API.post("/register", data);
       if (response.status == 200) {
-        console.log("User registered successfully");
+        // console.log("User registered successfully");
 
         dispatch(setStatus(STATUSES.SUCCESS));
       }
