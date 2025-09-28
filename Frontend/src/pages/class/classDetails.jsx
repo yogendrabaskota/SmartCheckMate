@@ -9,14 +9,17 @@ import {
   FaCalendarAlt,
   FaSearch,
 } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAttendanceRecords } from "../../store/attendanceSlice";
 
 const ClassDetails = () => {
+  const dispatch = useDispatch();
+  const { status, attendanceRecords } = useSelector(
+    (state) => state.attendance
+  );
   const { schoolId, classId } = useParams();
   const navigate = useNavigate();
   const [className, setClassName] = useState("");
-  const [attendanceDates, setAttendanceDates] = useState([]);
-  const [attendanceData, setAttendanceData] = useState("");
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -29,46 +32,14 @@ const ClassDetails = () => {
       return;
     }
 
-    const fetchAttendanceDates = async () => {
-      setLoading(true);
-      setError("");
-      try {
-        const response = await fetch(
-          `https://smartcheckmate.onrender.com/api/student/getAll/${classId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `${token}`,
-            },
-          }
-        );
-
-        const result = await response.json();
-
-        if (!response.ok) {
-          throw new Error(result.message || "Failed to fetch attendance.");
-        }
-
-        setAttendanceDates(result.dates || []);
-        setAttendanceData(result.data || "");
-      } catch (error) {
-        console.error("Error fetching attendance dates:", error);
-        setError(error.message || "Failed to load attendance data.");
-        setAttendanceDates([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAttendanceDates();
-  }, [classId, navigate]);
+    dispatch(fetchAttendanceRecords(classId));
+  }, [classId, dispatch, navigate]);
 
   useEffect(() => {
     const fetchClassDetails = async () => {
       try {
         const response = await fetch(
-          `https://smartcheckmate.onrender.com/api/class/add/${classId}`,
+          `http://localhost:5000/api/class/add/${classId}`,
           {
             method: "GET",
             headers: {
@@ -95,11 +66,12 @@ const ClassDetails = () => {
     fetchClassDetails();
   }, [classId]);
 
-  const filteredDates = attendanceDates.filter((date) =>
+  // filter dates from Redux state
+  const filteredDates = attendanceRecords.filter((date) =>
     date.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) {
+  if (status === "loading") {
     return (
       <div className="flex justify-center items-center h-screen bg-gray-50">
         <div className="flex flex-col items-center">
@@ -128,12 +100,12 @@ const ClassDetails = () => {
                 {className || "Class Details"}
               </h1>
               <p className="text-sm text-gray-500">
-                {attendanceDates.length} attendance records
+                {attendanceRecords.length} attendance records
               </p>
             </div>
           </div>
 
-          {attendanceDates.length > 0 && (
+          {attendanceRecords.length > 0 && (
             <div className="relative w-full md:w-auto">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <FaSearch className="text-gray-400" />
@@ -153,15 +125,6 @@ const ClassDetails = () => {
         {error && (
           <div className="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">
             {error}
-          </div>
-        )}
-
-        {/* Attendance Data */}
-        {attendanceData && (
-          <div className="mb-6 p-4 bg-white rounded-lg shadow-sm border border-gray-200">
-            <p className="text-center text-lg font-semibold text-[#1F2937]">
-              {attendanceData}
-            </p>
           </div>
         )}
 
@@ -219,6 +182,7 @@ const ClassDetails = () => {
 
         {/* Action Buttons */}
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* Add Student */}
           <button
             onClick={() => navigate(`/student/add/${schoolId}/${classId}`)}
             className="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm border border-gray-200 hover:border-[#10B981]/30 hover:shadow-md transition-all"
@@ -234,6 +198,7 @@ const ClassDetails = () => {
             </p>
           </button>
 
+          {/* Today’s Attendance */}
           <button
             onClick={() => navigate(`/attendance/today/${schoolId}/${classId}`)}
             className="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm border border-gray-200 hover:border-[#10B981]/30 hover:shadow-md transition-all"
@@ -249,6 +214,7 @@ const ClassDetails = () => {
             </p>
           </button>
 
+          {/* Student Details */}
           <button
             onClick={() => navigate(`/student/details/${schoolId}/${classId}`)}
             className="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm border border-gray-200 hover:border-[#10B981]/30 hover:shadow-md transition-all"
