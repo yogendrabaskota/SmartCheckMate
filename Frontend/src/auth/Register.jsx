@@ -13,7 +13,7 @@ const Register = () => {
     password: "",
   });
   const navigate = useNavigate();
-  const { status } = useSelector((state) => state.auth);
+  const { status, error } = useSelector((state) => state.auth);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,13 +29,14 @@ const Register = () => {
   };
   useEffect(() => {
     if (status == STATUSES.SUCCESS) {
-      console.log("here");
+      // console.log("here");s
       navigate("/login");
       dispatch(setStatus(STATUSES.IDLE));
     } else if (status == STATUSES.ERROR) {
-      alert("Registration failed. Please try again.");
+      // alert("Registration failed. Please try again.");
+      alert(error);
     }
-  }, [status, navigate, dispatch]);
+  }, [status, navigate, dispatch, error]);
 
   return (
     <div className="flex flex-col min-h-screen bg-[#f0fdf4] mt-20">
@@ -47,7 +48,8 @@ const Register = () => {
 
           {status === STATUSES.ERROR && (
             <p className="text-red-500 text-center mt-4 font-medium">
-              Something went wrong
+              {error}
+              {}
             </p>
           )}
 

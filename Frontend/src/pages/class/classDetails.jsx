@@ -84,17 +84,24 @@ const ClassDetails = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 mt-20">
+      <button
+        onClick={() => navigate(`/schoolDetails/${schoolId}`)}
+        className="flex items-center text-[#10B981] hover:text-[#0e9e6d] mr-4 transition-colors"
+      >
+        <FaArrowLeft className="mr-2" />
+        Back
+      </button>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div className="flex items-center">
-            <button
+            {/* <button
               onClick={() => navigate(`/schoolDetails/${schoolId}`)}
               className="flex items-center text-[#10B981] hover:text-[#0e9e6d] mr-4 transition-colors"
             >
               <FaArrowLeft className="mr-2" />
               Back
-            </button>
+            </button> */}
             <div>
               <h1 className="text-2xl font-bold text-[#1F2937]">
                 {className || "Class Details"}

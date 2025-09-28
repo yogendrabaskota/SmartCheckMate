@@ -8,6 +8,7 @@ const authSlice = createSlice({
     user: null,
     status: STATUSES.IDLE,
     token: "",
+    error: null,
     forgotPasswordData: {
       email: "",
       status: STATUSES.IDLE,
@@ -30,6 +31,9 @@ const authSlice = createSlice({
     setForgotPasswordDataStatus(state, action) {
       state.forgotPasswordData.status = action.payload;
     },
+    setError(state, action) {
+      state.error = action.payload;
+    },
   },
 });
 
@@ -39,6 +43,7 @@ export const {
   setToken,
   setEmail,
   setForgotPasswordDataStatus,
+  setError,
 } = authSlice.actions;
 export default authSlice.reducer;
 
@@ -54,6 +59,13 @@ export function registerUser(data) {
       }
     } catch (error) {
       dispatch(setStatus(STATUSES.ERROR));
+      const errMsg =
+        error.response?.data?.errors[0].message ||
+        error?.errors?.message ||
+        "Something went wrong";
+      dispatch(setError(errMsg));
+      // dispatch(setStatus(STATUSES.ERROR));
+
       console.log(error.message);
     }
   };

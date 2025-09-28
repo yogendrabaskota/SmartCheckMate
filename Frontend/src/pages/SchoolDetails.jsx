@@ -10,6 +10,7 @@ import {
   FaTrash,
   FaSpinner,
   FaSearch,
+  FaArrowLeft,
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteClass, fetchClass } from "../store/classSlice";
@@ -91,6 +92,13 @@ const SchoolDetails = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 mt-20">
+      <button
+        onClick={() => navigate(`/dashboard`)}
+        className="flex items-center text-[#10B981] hover:text-[#0e9e6d] mr-4 transition-colors"
+      >
+        <FaArrowLeft className="mr-2" />
+        Back
+      </button>
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaSchool,
   FaPlus,
@@ -74,13 +74,24 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-6 mt-20">
       <div className="max-w-7xl mx-auto">
+        {/* <button
+          onClick={() => navigate(`/`)}
+          className="flex items-center text-[#10B981] hover:text-[#0e9e6d] mr-4 transition-colors"
+        >
+          <FaArrowLeft className="mr-2" />
+          Back
+        </button> */}
+
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-[#1F2937] flex items-center">
-              <FaSchool className="text-[#10B981] mr-3" />
-              Dashboard
-            </h1>
+            <Link to={"/dashboard"}>
+              <h1 className="text-3xl font-bold text-[#1F2937] flex items-center">
+                <FaSchool className="text-[#10B981] mr-3" />
+                Dashboard
+              </h1>
+            </Link>
+
             <p className="text-gray-500 mt-1">
               {schools?.length} {schools?.length === 1 ? "school" : "schools"}{" "}
               registered
