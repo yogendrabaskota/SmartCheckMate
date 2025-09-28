@@ -39,7 +39,8 @@ const ClassDetails = () => {
     const fetchClassDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/class/add/${classId}`,
+          // `http://localhost:5000/api/class/add/${classId}`,
+          `https://smartcheckmate.onrender.com/api/class/add/${classId}`,
           {
             method: "GET",
             headers: {
